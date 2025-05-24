@@ -8,7 +8,7 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
   const groupMembership = {
     "titans": ["brody", "ashley", "justin", "zack"],
     "olympians": ["ines", "pierre", "ford", "chris"],
-    "innovators": ["vi", "devon", "virgule", "jordan"],
+    "innovators": ["vi", "devon", "virgile", "jordan"],
     "voyagers": ["beans", "nelson", "david", "pat"],
     "pioneers": ["kelly", "lily", "leo", "max"]
   };
