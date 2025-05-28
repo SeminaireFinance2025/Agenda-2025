@@ -8,13 +8,13 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
   const groupMembership = {
     "group 1": ["Loyse FAROUX", "Ines MAJJAD", "Antoine BEGON"],
     "group 2": ["Antoine DUVERGER", "Marjorie CLEMENT"],
-    "group 3": ["Aida LOCQUETTE", "Aldona MENERET"],
+    "group 3": ["Aida LOCQUETTE", "Aldona MENERET"]
   };
 
   const groupPdfs = {
     "group 1": "pdfs/TESTGROUP1.pdf",
     "group 2": "pdfs/TESTGROUP2.pdf",
-    "group 3": "pdfs/TESTGROUP3.pdf",
+    "group 3": "pdfs/TESTGROUP3.pdf"
   };
 
   let pdfFile = null;
