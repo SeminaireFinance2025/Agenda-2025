@@ -6,19 +6,15 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
 
   // --- Configuration Section ---
   const groupMembership = {
-    "titans": ["brody", "ashley", "justin", "zack"],
-    "olympians": ["ines", "pierre", "ford", "chris"],
-    "innovators": ["vi", "devon", "virgile", "jordan"],
-    "voyagers": ["beans", "nelson", "david", "pat"],
-    "pioneers": ["kelly", "lily", "leo", "max"]
+    "group 1": ["brody", "ashley", "justin", "zack"],
+    "group 2": ["ines", "pierre", "ford", "chris"],
+    "group 3": ["vi", "devon", "virgile", "jordan"],
   };
 
   const groupPdfs = {
-    "titans": "pdfs/proj3.pdf",
-    "olympians": "pdfs/Mechanical_Keyboard_Instructions.pdf",
-    "innovators": "pdfs/hw8.pdf",
-    "voyagers": "pdfs/hw7.pdf",
-    "pioneers": "pdfs/cpu.pdf"
+    "group 1": "pdfs/proj3.pdf",
+    "group 2": "pdfs/Mechanical_Keyboard_Instructions.pdf",
+    "group 3": "pdfs/hw8.pdf",
   };
 
   let pdfFile = null;
