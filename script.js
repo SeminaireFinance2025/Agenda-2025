@@ -6,15 +6,15 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
 
   // --- Configuration Section ---
   const groupMembership = {
-    "group 1": ["loyse", "ines ", "antoine"],
-    "group 2": ["antoinee", "marjorie"],
-    "group 3": ["aida", "aldona "]
+    "group1": ["ines", "antoine"],
+    "group2": ["marjorie", "loyse"],
+    "group3": ["aldona", "aida"],
   };
 
   const groupPdfs = {
-    "group 1": "pdfs/TESTGROUP1.pdf",
-    "group 2": "pdfs/TESTGROUP2.pdf",
-    "group 3": "pdfs/TESTGROUP3.pdf"
+    "group1": "pdfs/TESTGROUP1.pdf",
+    "group2": "pdfs/TESTGROUP2.pdf",
+    "group3": "pdfs/TESTGROUP3.pdf",
   };
 
   let pdfFile = null;
