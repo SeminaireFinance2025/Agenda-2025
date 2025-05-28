@@ -12,9 +12,9 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
   };
 
   const groupPdfs = {
-    "group 1": "pdfs/proj3.pdf",
-    "group 2": "pdfs/Mechanical_Keyboard_Instructions.pdf",
-    "group 3": "pdfs/hw8.pdf",
+    "group 1": "pdfs/TEST GROUP 1.pdf",
+    "group 2": "pdfs/TEST GROUP 2.pdf",
+    "group 3": "pdfs/TEST GROUP 3.pdf",
   };
 
   let pdfFile = null;
