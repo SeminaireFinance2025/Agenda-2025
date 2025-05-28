@@ -6,9 +6,9 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
 
   // --- Configuration Section ---
   const groupMembership = {
-    "group 1": ["brody", "ashley", "justin", "zack"],
-    "group 2": ["ines", "pierre", "ford", "chris"],
-    "group 3": ["vi", "devon", "virgile", "jordan"],
+    "group 1": ["Loyse FAROUX", "Ines MAJJAD", "Antoine BEGON"],
+    "group 2": ["Antoine DUVERGER", "Marjorie CLEMENT"],
+    "group 3": ["Aida LOCQUETTE", "Aldona MENERET"],
   };
 
   const groupPdfs = {
