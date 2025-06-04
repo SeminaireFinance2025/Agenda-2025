@@ -3,16 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <title>Sélecteur de PDF</title>
-  <script src="script.js" defer></script>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <h1>Bonjour</h1>
 
   <form id="nameForm">
-    <label for="name">Veuillez entrer votre prénom et nom, pour obtenir votre planning :</label>
-    <input type="text" id="name" name="name" required>
-    <button type="submit">Valider</button>
+    <div>
+      <label for="first_name">Prénom :</label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        placeholder="e.g. Jean"
+        required
+      >
+    </div>
+    <div style="margin-top: 0.5em;">
+      <label for="last_name">Nom :</label>
+      <input
+        type="text"
+        id="last_name"
+        name="last_name"
+        placeholder="e.g. Dupont"
+        required
+      >
+    </div>
+    <div style="margin-top: 1em;">
+      <button type="submit">Valider</button>
+    </div>
   </form>
 
   <!-- Feedback message appears here if the name is invalid -->
