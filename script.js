@@ -18,13 +18,13 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
 
   // --- Section de configuration ---
   const groupMembership = {
-    "group1": ["ines majjad", "antoine begon"],
+    "group1": ["ines majjad", "antoine begon","antoine duverger],
     "group2": ["marjorie clement", "loyse faroux"],
     "group3": ["aldona meneret", "aida loquette"],
   };
 
   const groupPdfs = {
-    "group1": "pdfs/TESTGROUP1.pdf",
+    "group1": "pdfs/Planning Seminaire FINANCE ANTOINE.pdf",
     "group2": "pdfs/TESTGROUP2.pdf",
     "group3": "pdfs/TESTGROUP3.pdf",
   };
