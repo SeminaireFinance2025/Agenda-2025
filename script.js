@@ -24,7 +24,7 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
   };
 
   const groupPdfs = {
-    "group1": "pdfs/Planning Seminaire FINANCE ANTOINE.pdf",
+    "group1": "pdfs/PlanningSeminaireFINANCE.pdf",
     "group2": "pdfs/TESTGROUP2.pdf",
     "group3": "pdfs/TESTGROUP3.pdf",
   };
