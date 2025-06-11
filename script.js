@@ -18,7 +18,7 @@ document.getElementById('nameForm').addEventListener('submit', function(event) {
 
   // --- Section de configuration ---
   const groupMembership = {
-    "group1": ["ines majjad", "antoine begon","antoine duverger],
+    "group1": ["ines majjad", "antoine begon","antoine duverger"],
     "group2": ["marjorie clement", "loyse faroux"],
     "group3": ["aldona meneret", "aida loquette"],
   };
