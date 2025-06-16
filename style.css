@@ -1,11 +1,102 @@
+/* Base page */
 body {
-  background: #191970; color: #fff; font-family: Arial, sans-serif; text-align: center; padding:2em; margin:0;
+  background: #191970;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 2em;
+  margin: 0;
+  box-sizing: border-box;
 }
-form, #planning {
-  background: #fff; color:#000; border-radius:8px; padding:1.5em; box-shadow:0 2px 8px rgba(0,0,0,0.2); margin:0 auto;
+
+/* Make all elements inherit box-sizing */
+*, *::before, *::after {
+  box-sizing: inherit;
 }
-input, button { width:100%; padding:.8em; margin:.5em 0; font-size:1em; }
-button { background:#0056b3; color:#fff; border:none; cursor:pointer; }
-button:hover { background:#003f7f; }
-section { text-align:left; margin-bottom:1em; }
-h2, h3 { margin:0.5em 0; }
+
+/* Form and planning container share the same style */
+form,
+#planning {
+  background: #fff;
+  color: #000;
+  border-radius: 8px;
+  padding: 1.5em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  margin: 1em auto;          /* space between form and planning */
+  width: 100%;
+  max-width: 600px;          /* never wider than 600px */
+  overflow-wrap: break-word; /* long words/numbers wrap */
+  word-break: break-word;
+}
+
+/* Inputs and buttons */
+input,
+button {
+  width: 100%;
+  padding: 0.8em;
+  margin: 0.5em 0;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Button colors */
+button {
+  background: #0056b3;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+button:hover {
+  background: #003f7f;
+}
+
+/* Layout inside the planning box */
+section {
+  text-align: left;
+  margin-bottom: 1.5em;
+}
+
+/* Headings */
+h2,
+h3 {
+  margin: 0.5em 0;
+}
+
+/* Feedback text */
+#feedback {
+  color: #ff3333;
+  margin-top: 0.5em;
+  min-height: 1.2em;
+}
+
+/* Ensure the PDF button stays at bottom */
+#downloadPdf {
+  display: inline-block;
+  margin-top: 1em;
+  padding: 0.8em 1.2em;
+  background: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#downloadPdf:hover {
+  background: #0056b3;
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  body {
+    padding: 1em;
+  }
+  form,
+  #planning {
+    padding: 1em;
+  }
+  h1 {
+    font-size: 1.5em;
+  }
+}
