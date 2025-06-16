@@ -1,65 +1,38 @@
-name: Convert Excel to JSON
+#!/usr/bin/env python3
+import pandas as pd
+import json
+import unicodedata
 
-# 1) Give the workflow write access so it can push back to your repo
-permissions:
-  contents: write
+def normalize(name):
+    """Strip accents, lowercase, trim whitespace."""
+    nfkd = unicodedata.normalize('NFKD', str(name))
+    return ''.join([c for c in nfkd if not unicodedata.combining(c)]) \
+           .strip().lower()
 
-on:
-  push:
-    paths:
-      - 'assignments.xlsx'
-      - 'scripts/excel_to_json.py'
-      - '.github/workflows/convert-excel.yml'
+def main():
+    # 1) Load the sheet—your file has columns: NOM, PRENOM, ACT1, ACT2, ACT3
+    df = pd.read_excel('assignments.xlsx', dtype=str)
 
-jobs:
-  convert:
-    runs-on: ubuntu-latest
+    # 2) Normalize first & last names
+    df['nom_norm']    = df['NOM'].apply(normalize)
+    df['prenom_norm'] = df['PRENOM'].apply(normalize)
+    df['key']         = df['prenom_norm'] + ' ' + df['nom_norm']
 
-    steps:
-      # 2) Check out the code with credentials for push
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          persist-credentials: true
+    # 3) Build the assignments dict
+    assignments = {}
+    for _, row in df.iterrows():
+        assignments[row['key']] = {
+            # convert to float if present, otherwise None
+            'act1': float(row['ACT1']) if pd.notna(row['ACT1']) else None,
+            'act2': float(row['ACT2']) if pd.notna(row['ACT2']) else None,
+            'act3': float(row['ACT3']) if pd.notna(row['ACT3']) else None,
+        }
 
-      # 3) Debug: show what files we have
-      - name: List repo contents
-        run: |
-          echo "Working directory: $(pwd)"
-          ls -R .
+    # 4) Write it out
+    with open('assignments.json', 'w', encoding='utf-8') as f:
+        json.dump(assignments, f, ensure_ascii=False, indent=2)
 
-      # 4) Set up Python
-      - name: Setup Python 3.x
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+    print(f"✅ Wrote {len(assignments)} entries to assignments.json")
 
-      # 5) Install pandas & openpyxl
-      - name: Install dependencies
-        run: pip install pandas openpyxl
-
-      # 6) Debug: Python & pandas
-      - name: Python & pandas info
-        run: |
-          python --version
-          python -c "import pandas; print('pandas', pandas.__version__)"
-
-      # 7) Run the conversion
-      - name: Convert Excel to JSON
-        run: python scripts/excel_to_json.py
-
-      # 8) Commit & push the JSON
-      - name: Commit updated assignments.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assignments.json
-          if ! git diff --cached --quiet; then
-            git commit -m "🔄 Update assignments.json via Action"
-            git push origin HEAD:main
-          else
-            echo "No changes to assignments.json"
-          fi
+if __name__ == '__main__':
+    main()
