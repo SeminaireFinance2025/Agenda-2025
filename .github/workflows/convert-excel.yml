@@ -1,5 +1,9 @@
 name: Convert Excel to JSON
 
+# 1) Grant write permissions to the contents (so GITHUB_TOKEN can push)
+permissions:
+  contents: write
+
 on:
   push:
     paths:
@@ -11,7 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      # 2) Checkout with credentials
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0          # ensure full history, optional but recommended
+          persist-credentials: true  # <—— this allows pushes
 
       - name: Set up Python
         uses: actions/setup-python@v4
