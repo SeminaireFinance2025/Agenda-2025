@@ -1,43 +1,39 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Générateur de planning PDF</title>
-  <link rel="stylesheet" href="style.css">
-  <!-- html2pdf pour convertir le div en PDF -->
-  <script src="https://unpkg.com/html2pdf.js"></script>
+  <link rel="stylesheet" href="style.css" />
+  <!-- html2pdf for the “Télécharger PDF” button -->
+  <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
   <h1>Votre planning personnalisé</h1>
 
   <form id="nameForm">
-    <input type="text" id="first_name" placeholder="Prénom" required>
-    <input type="text" id="last_name"  placeholder="Nom"    required>
+    <input type="text" id="first_name" placeholder="Prénom" required />
+    <input type="text" id="last_name"  placeholder="Nom"   required />
     <button type="submit">Voir mon planning</button>
   </form>
+
   <div id="feedback"></div>
 
-  <!-- --- LE PLANNING (caché au départ) --- -->
-  <div id="planning" style="display:none; background:#fff; padding:1em; margin:2em auto; max-width:600px; border-radius:8px;">
+  <div id="planning" style="display:none">
     <h2>Planning de la journée</h2>
-
     <section>
       <h3>08h00 – Actualités (matin)</h3>
       <ul><li>Groupe : <strong id="g1"></strong></li></ul>
     </section>
-
     <section>
       <h3>13h15 – Présentations Concours</h3>
       <ul><li>Groupe : <strong id="g2"></strong></li></ul>
     </section>
-
     <section>
       <h3>16h00 – Conférences Transformation</h3>
       <ul><li>Groupe : <strong id="g3"></strong></li></ul>
     </section>
-
-    <button id="downloadPdf">Télécharger en PDF</button>
+    <button id="downloadPdf">Télécharger le PDF</button>
   </div>
 </body>
 </html>
