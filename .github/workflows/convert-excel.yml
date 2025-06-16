@@ -1,25 +1,36 @@
 name: Convert Excel to JSON
+
 on:
   push:
     paths:
       - 'assignments.xlsx'
       - 'scripts/excel_to_json.py'
+
 jobs:
   convert:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Check out repository
+        uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-python@v4
-        with: python-version: '3.x'
-      - name: Install deps
-        run: pip install pandas openpyxl
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install pandas openpyxl
+
       - name: Convert Excel → JSON
-        run: python scripts/excel_to_json.py
+        run: |
+          python scripts/excel_to_json.py
+
       - name: Commit assignments.json
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add assignments.json
-          git commit -m "🔄 Update assignments.json via Action" || echo "No changes"
+          git commit -m "🔄 Update assignments.json via Action" || echo "No changes to commit"
           git push
