@@ -1,38 +1,25 @@
-#!/usr/bin/env python3
-import pandas as pd
-import json
-import unicodedata
-
-def normalize(name):
-    """Strip accents, lowercase, trim whitespace."""
-    nfkd = unicodedata.normalize('NFKD', str(name))
-    return ''.join([c for c in nfkd if not unicodedata.combining(c)]) \
-           .strip().lower()
-
-def main():
-    # 1) Load the sheet—your file has columns: NOM, PRENOM, ACT1, ACT2, ACT3
-    df = pd.read_excel('assignments.xlsx', dtype=str)
-
-    # 2) Normalize first & last names
-    df['nom_norm']    = df['NOM'].apply(normalize)
-    df['prenom_norm'] = df['PRENOM'].apply(normalize)
-    df['key']         = df['prenom_norm'] + ' ' + df['nom_norm']
-
-    # 3) Build the assignments dict
-    assignments = {}
-    for _, row in df.iterrows():
-        assignments[row['key']] = {
-            # convert to float if present, otherwise None
-            'act1': float(row['ACT1']) if pd.notna(row['ACT1']) else None,
-            'act2': float(row['ACT2']) if pd.notna(row['ACT2']) else None,
-            'act3': float(row['ACT3']) if pd.notna(row['ACT3']) else None,
-        }
-
-    # 4) Write it out
-    with open('assignments.json', 'w', encoding='utf-8') as f:
-        json.dump(assignments, f, ensure_ascii=False, indent=2)
-
-    print(f"✅ Wrote {len(assignments)} entries to assignments.json")
-
-if __name__ == '__main__':
-    main()
+name: Convert Excel to JSON
+on:
+  push:
+    paths:
+      - 'assignments.xlsx'
+      - 'scripts/excel_to_json.py'
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with: python-version: '3.x'
+      - name: Install deps
+        run: pip install pandas openpyxl
+      - name: Convert Excel → JSON
+        run: python scripts/excel_to_json.py
+      - name: Commit assignments.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assignments.json
+          git commit -m "🔄 Update assignments.json via Action" || echo "No changes"
+          git push
