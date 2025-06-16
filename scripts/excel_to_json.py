@@ -23,3 +23,4 @@ for _, row in df.iterrows():
 # 4) Write to assignments.json at repo root
 with open("assignments.json", "w", encoding="utf-8") as f:
     json.dump(assignments, f, ensure_ascii=False, indent=2)
+#hello
