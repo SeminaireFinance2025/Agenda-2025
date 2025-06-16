@@ -12,25 +12,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // ——————————————————————————————————————————
   // 1) Load the JSON from the raw GitHub URL
   // —————————————————————————————————————————— 
-  const RAW_JSON_URL =
-  "https://raw.githubusercontent.com/SeminaireFinance2025/Agenda-2025/main/assignments.json";
+  const RAW_JSON = "https://raw.githubusercontent.com/SeminaireFinance2025/Agenda-2025/main/assignments.json";
 
-console.log("Fetching assignments from:", RAW_JSON_URL);
-fetch(RAW_JSON_URL)
-  .then(r => {
-    console.log("Fetch status:", r.status, r.url);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
-  .then(json => {
-    console.log("Assignments loaded:", Object.keys(json).length, "entries");
-    assignments = json;
-  })
-  .catch(err => {
-    feedback.textContent = "Impossible de charger les affectations : " + err;
-    console.error(err);
-  });
-
+  fetch(RAW_JSON)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(json => {
+      assignments = json;
+    })
+    .catch(err => {
+      feedback.textContent = "Impossible de charger les affectations : " + err.message;
+    });
   // ——————————————————————————————————————————
   // 2) Form submit handler
   // ——————————————————————————————————————————
