@@ -9,24 +9,28 @@ on:
 jobs:
   convert:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository
+      # 1. Check out your code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
+      # 2. Set up Python
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Install dependencies
+      # 3. Install dependencies
+      - name: Install deps
         run: |
           pip install pandas openpyxl
 
+      # 4. Run your conversion script
       - name: Convert Excel → JSON
         run: |
           python scripts/excel_to_json.py
 
+      # 5. Commit and push the generated JSON
       - name: Commit assignments.json
         run: |
           git config user.name "github-actions[bot]"
