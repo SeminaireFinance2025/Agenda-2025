@@ -4,27 +4,21 @@
   <meta charset="UTF-8" />
   <title>Générateur de planning PDF</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- html2pdf for PDF export -->
   <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
   <h1>Générateur de planning PDF</h1>
 
-  <!-- Name entry form -->
   <form id="nameForm">
     <input type="text" id="first_name" placeholder="Prénom" required />
     <input type="text" id="last_name"  placeholder="Nom"   required />
     <button type="submit">Voir mon planning</button>
   </form>
 
-  <!-- Feedback on load/lookup errors -->
   <div id="feedback"></div>
 
-  <!-- Planning container, initially hidden -->
   <div id="planning" class="planning" style="display:none">
-
-    <!-- Optional header -->
     <h2 class="planning-header">Mon planning personnalisé</h2>
 
     <!-- 1) Introduction -->
@@ -41,20 +35,30 @@
       </ul>
     </div>
 
-    <!-- 2) Actualités (dynamic group) -->
+    <!-- 2) Actualités -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Actualités</span>
         <span class="session-time">9h00</span>
       </div>
       <ul class="session-body">
-        <li>
-          Groupe : <strong id="g1" class="group-number"></strong>
-        </li>
+        <li>Groupe : <strong id="g1" class="group-number"></strong></li>
       </ul>
     </div>
 
-    <!-- 3) Témoignage -->
+    <!-- 3) Témoignage Safran Cabin et Seats -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Témoignage Safran Cabin et Seats</span>
+        <span class="session-location">Auditorium</span>
+        <span class="session-time">15h15</span>
+      </div>
+      <ul class="session-body">
+        <li>Témoignage Safran Cabin et Seats</li>
+      </ul>
+    </div>
+
+    <!-- 4) Témoignage -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Témoignage</span>
@@ -66,7 +70,7 @@
       </ul>
     </div>
 
-    <!-- 4) Pause déjeuner -->
+    <!-- 5) Pause déjeuner -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Pause déjeuner</span>
@@ -75,7 +79,7 @@
       </div>
     </div>
 
-    <!-- 5) Présentations Concours Innovation -->
+    <!-- 6) Présentations Concours Innovation -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Présentations Concours Innovation</span>
@@ -88,7 +92,7 @@
       </ul>
     </div>
 
-    <!-- 6) Conférences Transformation -->
+    <!-- 7) Conférences Transformation -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Conférences Transformation</span>
@@ -99,7 +103,7 @@
       </ul>
     </div>
 
-    <!-- 7) Concours innovation AWARD -->
+    <!-- 8) Concours innovation AWARD -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Concours innovation AWARD</span>
@@ -111,7 +115,7 @@
       </ul>
     </div>
 
-    <!-- 8) Conclusion -->
+    <!-- 9) Conclusion -->
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Conclusion</span>
@@ -121,7 +125,6 @@
       <p class="session-footer">Fin de la journée à 17h30</p>
     </div>
 
-    <!-- PDF download button -->
     <button id="downloadPdf" class="download-btn">Télécharger le PDF</button>
   </div>
 </body>
