@@ -84,10 +84,11 @@ button:hover {
   margin-bottom: 1em;
 }
 
-/* Blue header bar, left titles with right-aligned time */
+/* Blue header bar using flex for left+right alignment */
 .session-bar {
-  display: block;
-  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: #254a7d;
   color: #fff;
   padding: 0.4em 0.8em;
@@ -95,17 +96,24 @@ button:hover {
   font-weight: bold;
   font-size: 0.95em;
 }
-.session-bar .session-title,
-.session-bar .session-location {
-  display: inline-block;
-  margin-right: 1em;
+
+.session-bar .session-title {
+  /* left, wraps if needed */
+  text-align: left;
+  flex: 1;
 }
+
 .session-bar .session-location {
+  /* center or leave blank if unused */
   font-style: italic;
+  flex: 1;
+  text-align: center;
 }
+
 .session-bar .session-time {
-  float: right;
-  margin: 0;
+  /* right aligned */
+  flex: 0;
+  text-align: right;
 }
 
 /* White body under each bar, bulleted and indented */
@@ -120,6 +128,7 @@ button:hover {
   border-radius: 0 0 6px 6px;
   color: #000;
 }
+
 .session-body li {
   margin-bottom: 0.5em;
   line-height: 1.4;
@@ -161,6 +170,7 @@ button:hover {
   letter-spacing: 0.05em;
   transition: background-color 0.2s ease;
 }
+
 #downloadPdf:hover,
 .download-btn:hover {
   background: #1e3f6f;
