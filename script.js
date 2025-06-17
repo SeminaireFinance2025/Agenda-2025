@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         g1.textContent = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
         g2.textContent = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
         g3.textContent = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
+        document.getElementById("g2b").textContent = spans.g2.textContent;
         planning.style.display = "block";
 
         // 4) PDF download
