@@ -8,7 +8,9 @@ body {
   margin: 0;
   box-sizing: border-box;
 }
-*, *::before, *::after { box-sizing: inherit; }
+*, *::before, *::after {
+  box-sizing: inherit;
+}
 
 /* Shared style for form and planning card */
 form,
@@ -25,7 +27,8 @@ form,
 }
 
 /* Inputs and primary button */
-input, button {
+input,
+button {
   width: 100%;
   padding: 0.8em;
   margin: 0.5em 0;
@@ -56,7 +59,9 @@ section {
   text-align: left;
   margin-bottom: 1em;
 }
-h2, h3 { margin: 0.5em 0; }
+h2, h3 {
+  margin: 0.5em 0;
+}
 
 /* PDF button styling */
 #downloadPdf {
