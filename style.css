@@ -17,3 +17,14 @@
   /* never break inside */
   white-space: nowrap;
 }
+/* prevent any breaking inside the bar and its children */
+.session-bar {
+  white-space: nowrap;    /* no wrapping of text inside */
+}
+
+/* make the time span inline and unbreakable */
+.session-bar .session-time {
+  display: inline-block;  /* treat as a single box */
+  white-space: nowrap;    /* never wrap those characters */
+  margin-left: auto;      /* push it to the right */
+}
