@@ -9,17 +9,24 @@ document.addEventListener("DOMContentLoaded", function() {
   const g3       = document.getElementById("g3");
 
   // 1) Fetch the JSON we generated
-  fetch("./assignments.json")
-    .then(function(res) {
-      console.log("Fetch assignments.json status:", res.status);
-      if (!res.ok) {
-        throw new Error("HTTP " + res.status);
-      }
-      return res.json();
+ fetch("./assignments.json")
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.text();
     })
-    .then(function(assignments) {
-      console.log("✅ Loaded", Object.keys(assignments).length, "entries");
-
+    .then(text => {
+      // replace any standalone NaN (not inside quotes) with "N/A"
+      const fixed = text.replace(/\bNaN\b/g, '"N/A"');
+      return JSON.parse(fixed);
+    })
+    .then(assignments => {
+      console.log("✅ Loaded assignments after NaN→N/A replacement");
+      // ... (rest of your form handler here) ...
+    })
+    .catch(err => {
+      feedback.textContent = "Impossible de charger les affectations : " + err.message;
+      console.error(err);
+    });
       // 2) On form submit, look up the user
       form.addEventListener("submit", function(e) {
         e.preventDefault();
