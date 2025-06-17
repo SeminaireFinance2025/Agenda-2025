@@ -4,123 +4,125 @@
   <meta charset="UTF-8" />
   <title>Générateur de planning PDF</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- html2pdf for the “Télécharger PDF” button -->
+  <!-- html2pdf for PDF export -->
   <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>Votre planning personnalisé</h1>
+  <h1>Générateur de planning PDF</h1>
 
+  <!-- Name entry form -->
   <form id="nameForm">
     <input type="text" id="first_name" placeholder="Prénom" required />
     <input type="text" id="last_name"  placeholder="Nom"   required />
     <button type="submit">Voir mon planning</button>
   </form>
 
+  <!-- Feedback on load/lookup errors -->
   <div id="feedback"></div>
 
-  <div id="planning" style="display:none" class="planning">
+  <!-- Planning container, initially hidden -->
+  <div id="planning" class="planning" style="display:none">
 
-  <!-- Header -->
-  <h1 class="planning-header">SEMINAIRE FINANCE 2025</h1>
+    <!-- Optional header -->
+    <h2 class="planning-header">Mon planning personnalisé</h2>
 
-  <!-- Introduction block -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Introduction</span>
-      <span class="session-location">Auditorium</span>
-      <span class="session-time">8h00</span>
+    <!-- 1) Introduction -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Introduction</span>
+        <span class="session-location">Auditorium</span>
+        <span class="session-time">8h00</span>
+      </div>
+      <ul class="session-body">
+        <li>Café d’accueil</li>
+        <li>Introduction de la journée</li>
+        <li>Présentation de l’agenda</li>
+      </ul>
     </div>
-    <ul class="session-body">
-      <li>Café d’accueil</li>
-      <li>Introduction de la journée</li>
-      <li>Présentation de l’agenda</li>
-    </ul>
-  </div>
 
-  <!-- Actualités block with dynamic group -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Actualités</span>
-      <span class="session-location"></span>
-      <span class="session-time">9h00</span>
+    <!-- 2) Actualités (dynamic group) -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Actualités</span>
+        <span class="session-time">9h00</span>
+      </div>
+      <ul class="session-body">
+        <li>
+          Groupe : <strong id="g1" class="group-number"></strong>
+        </li>
+      </ul>
     </div>
-    <ul class="session-body">
-      <li>
-        Groupe : <strong id="g1" class="group-number"></strong>
-      </li>
-    </ul>
-  </div>
 
-  <!-- Témoignage block -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Témoignage</span>
-      <span class="session-location">Auditorium</span>
-      <span class="session-time">11h00</span>
+    <!-- 3) Témoignage -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Témoignage</span>
+        <span class="session-location">Auditorium</span>
+        <span class="session-time">11h00</span>
+      </div>
+      <ul class="session-body">
+        <li>Témoignage de Fabrice LACROIX : DAF des JO de Paris 2024</li>
+      </ul>
     </div>
-    <ul class="session-body">
-      <li>Témoignage de Fabrice LACROIX : DAF des JO DE PARIS 2024</li>
-    </ul>
-  </div>
 
-  <!-- Pause déjeuner static -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Pause déjeuner</span>
-      <span class="session-location">Foyer</span>
-      <span class="session-time">12h00</span>
+    <!-- 4) Pause déjeuner -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Pause déjeuner</span>
+        <span class="session-location">Foyer</span>
+        <span class="session-time">12h00</span>
+      </div>
     </div>
-  </div>
 
-  <!-- Présentations Concours block -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Présentations Concours Innovation</span>
-      <span class="session-location">Hall de l’hôtel</span>
-      <span class="session-time">13h15</span>
+    <!-- 5) Présentations Concours Innovation -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Présentations Concours Innovation</span>
+        <span class="session-location">Hall de l’hôtel</span>
+        <span class="session-time">13h15</span>
+      </div>
+      <ul class="session-body">
+        <li>Première partie : groupe <strong id="g2" class="group-number"></strong></li>
+        <li>Deuxième partie : groupe <strong id="g2b" class="group-number"></strong></li>
+      </ul>
     </div>
-    <ul class="session-body">
-      <li>Première partie : groupe <strong id="g2" class="group-number"></strong></li>
-      <li>Deuxième partie : groupe <strong id="g2b" class="group-number"></strong></li>
-    </ul>
-  </div>
 
-  <!-- Conférences Transformation block -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Conférences Transformation</span>
-      <span class="session-location"></span>
-      <span class="session-time">16h00</span>
+    <!-- 6) Conférences Transformation -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Conférences Transformation</span>
+        <span class="session-time">16h00</span>
+      </div>
+      <ul class="session-body">
+        <li>Groupe : <strong id="g3" class="group-number"></strong></li>
+      </ul>
     </div>
-    <ul class="session-body">
-      <li>Groupe : <strong id="g3" class="group-number"></strong></li>
-    </ul>
-  </div>
 
-  <!-- Award + Conclusion -->
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Concours innovation AWARD</span>
-      <span class="session-location">Auditorium</span>
-      <span class="session-time">17h00</span>
+    <!-- 7) Concours innovation AWARD -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Concours innovation AWARD</span>
+        <span class="session-location">Auditorium</span>
+        <span class="session-time">17h00</span>
+      </div>
+      <ul class="session-body">
+        <li>Votez pour votre innovation préférée <a href="#">ici</a></li>
+      </ul>
     </div>
-    <ul class="session-body">
-      <li>Votez pour votre innovation préférée <a href="#">ici</a></li>
-    </ul>
-  </div>
 
-  <div class="session">
-    <div class="session-bar">
-      <span class="session-title">Conclusion</span>
-      <span class="session-location">Auditorium</span>
-      <span class="session-time">17h15</span>
+    <!-- 8) Conclusion -->
+    <div class="session">
+      <div class="session-bar">
+        <span class="session-title">Conclusion</span>
+        <span class="session-location">Auditorium</span>
+        <span class="session-time">17h15</span>
+      </div>
+      <p class="session-footer">Fin de la journée à 17h30</p>
     </div>
-    <p class="session-footer">Fin de la journée à 17h30</p>
+
+    <!-- PDF download button -->
+    <button id="downloadPdf" class="download-btn">Télécharger le PDF</button>
   </div>
-
-  <button id="downloadPdf" class="download-btn">Télécharger le PDF</button>
-</div>
-
 </body>
 </html>
