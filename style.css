@@ -24,7 +24,7 @@ form,
 #planning {
   background: #fff;
   color: #000;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;  /* ensure same font */
   border-radius: 8px;
   padding: 1.5em;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -87,15 +87,14 @@ button:hover {
 .session {
   margin-bottom: 1em;
   font-family: Arial, sans-serif;
-  color: #000;
+  color: #000; /* ensure text is black */
 }
 
-/* Blue header bar—flex with no wrap */
+/* Blue header bar with flex for proper alignment */
 .session-bar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
   background: #254a7d;
   color: #fff;
   padding: 0.4em 0.8em;
@@ -105,29 +104,23 @@ button:hover {
   font-family: Arial, sans-serif;
 }
 
-/* Left title */
 .session-bar .session-title {
-  flex: 0 1 auto;
+  flex: 1;
   text-align: left;
 }
 
-/* Optional location in center */
 .session-bar .session-location {
-  flex: 0 1 auto;
+  flex: 1;
   text-align: center;
   font-style: italic;
-  margin: 0 1em;
 }
 
-/* Right-aligned, non-wrapping time */
 .session-bar .session-time {
-  flex: 0 0 auto;       /* do not grow or shrink */
-  margin-left: auto;    /* push to right edge */
-  white-space: nowrap;  /* never wrap the characters */
+  flex: 0;
   text-align: right;
 }
 
-/* White body under each bar, bulleted and indented */
+/* White body beneath each bar, bulleted and indented */
 .session-body {
   background: #fff;
   list-style: disc inside;
