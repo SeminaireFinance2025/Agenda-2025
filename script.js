@@ -1,37 +1,39 @@
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("✔ script.js running");
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("▶️ script.js initialized");
 
+  // Grab all the important DOM nodes and log them
   const form     = document.getElementById("nameForm");
+  const firstIn  = document.getElementById("first_name");
+  const lastIn   = document.getElementById("last_name");
   const feedback = document.getElementById("feedback");
   const planning = document.getElementById("planning");
   const g1       = document.getElementById("g1");
   const g2       = document.getElementById("g2");
   const g3       = document.getElementById("g3");
+  const download = document.getElementById("downloadPdf");
+  console.log({ form, firstIn, lastIn, feedback, planning, g1, g2, g3, download });
 
-  // 1) Fetch the JSON we generated
- fetch("./assignments.json")
+  // 1) Load the JSON as text, replace NaN → "N/A", parse it
+  fetch("./assignments.json")
     .then(res => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      console.log("📥 fetch status:", res.status, res.url);
+      if (!res.ok) throw new Error("HTTP " + res.status);
       return res.text();
     })
     .then(text => {
-      // replace any standalone NaN (not inside quotes) with "N/A"
+      console.log("📄 raw JSON starts with:", text.slice(0, 100));
       const fixed = text.replace(/\bNaN\b/g, '"N/A"');
       return JSON.parse(fixed);
     })
     .then(assignments => {
-      console.log("✅ Loaded assignments after NaN→N/A replacement");
-      // ... (rest of your form handler here) ...
-    })
-    .catch(err => {
-      feedback.textContent = "Impossible de charger les affectations : " + err.message;
-      console.error(err);
-    });
-      // 2) On form submit, look up the user
-      form.addEventListener("submit", function(e) {
-        e.preventDefault();
+      console.log("✅ Parsed assignments:", Object.keys(assignments).length, "entries");
+
+      // 2) Now that we have data, wire up the form submit
+      form.addEventListener("submit", ev => {
+        ev.preventDefault();
         feedback.textContent = "";
 
+        // Normalize accents + lowercase
         function normalize(str) {
           return str
             .normalize("NFD")
@@ -40,47 +42,49 @@ document.addEventListener("DOMContentLoaded", function() {
             .toLowerCase();
         }
 
-        const firstRaw = document.getElementById("first_name").value;
-        const lastRaw  = document.getElementById("last_name").value;
-        const first = normalize(firstRaw);
-        const last  = normalize(lastRaw);
+        const first = normalize(firstIn.value);
+        const last  = normalize(lastIn.value);
+        console.log("👤 Input normalized:", first, last);
 
-        console.log("Inputs → first:", first, "last:", last);
         if (!first || !last) {
           feedback.textContent = "Merci de remplir prénom et nom.";
+          console.warn("❗ Missing first or last");
           return;
         }
 
         const key = first + " " + last;
-        console.log("Looking up key:", key);
+        console.log("🔑 Lookup key:", key);
+
         const user = assignments[key];
-        console.log("Lookup result:", user);
+        console.log("🔍 Lookup result:", user);
 
         if (!user) {
           feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe.";
+          console.error("❌ User not found for key:", key);
           return;
         }
 
-        // 3) Inject into the planning card
-        g1.textContent = (user.act1 != null) ? "Groupe " + user.act1 : "N/A";
-        g2.textContent = (user.act2 != null) ? "Groupe " + user.act2 : "N/A";
-        g3.textContent = (user.act3 != null) ? "Groupe " + user.act3 : "N/A";
+        // 3) Inject groups into the page
+        g1.textContent = user.act1 === "N/A" ? "N/A" : "Groupe " + user.act1;
+        g2.textContent = user.act2 === "N/A" ? "N/A" : "Groupe " + user.act2;
+        g3.textContent = user.act3 === "N/A" ? "N/A" : "Groupe " + user.act3;
         planning.style.display = "block";
+        console.log("🎉 Planning displayed");
 
-        // 4) Wire up the PDF download
-        document.getElementById("downloadPdf").onclick = function() {
+        // 4) Wire PDF button
+        download.onclick = () => {
           html2pdf()
             .set({
               margin: 0.5,
-              filename: "planning_" + first + "_" + last + ".pdf"
+              filename: `planning_${first}_${last}.pdf`,
             })
             .from(planning)
             .save();
         };
       });
     })
-    .catch(function(err) {
-      console.error("Failed to load JSON:", err);
+    .catch(err => {
+      console.error("❌ Failed to load or parse assignments.json:", err);
       feedback.textContent = "Impossible de charger les affectations : " + err.message;
     });
 });
