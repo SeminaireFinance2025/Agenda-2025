@@ -70,7 +70,6 @@ button:hover {
   text-align: left;
 }
 
-/* Optional header inside planning */
 .planning-header {
   font-style: italic;
   text-align: center;
@@ -85,7 +84,7 @@ button:hover {
   margin-bottom: 1em;
 }
 
-/* Blue bar now left-aligned */
+/* Blue header bar, left titles with right-aligned time */
 .session-bar {
   display: block;
   text-align: left;
@@ -96,17 +95,17 @@ button:hover {
   font-weight: bold;
   font-size: 0.95em;
 }
-
-/* Make title/location/time inline, with spacing */
 .session-bar .session-title,
-.session-bar .session-location,
-.session-bar .session-time {
+.session-bar .session-location {
   display: inline-block;
   margin-right: 1em;
 }
-
-.session-location {
+.session-bar .session-location {
   font-style: italic;
+}
+.session-bar .session-time {
+  float: right;
+  margin: 0;
 }
 
 /* White body under each bar, bulleted and indented */
@@ -121,7 +120,6 @@ button:hover {
   border-radius: 0 0 6px 6px;
   color: #000;
 }
-
 .session-body li {
   margin-bottom: 0.5em;
   line-height: 1.4;
@@ -163,7 +161,6 @@ button:hover {
   letter-spacing: 0.05em;
   transition: background-color 0.2s ease;
 }
-
 #downloadPdf:hover,
 .download-btn:hover {
   background: #1e3f6f;
