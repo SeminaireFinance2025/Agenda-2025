@@ -90,11 +90,11 @@ button:hover {
   color: #000;
 }
 
-/* Blue header bar with flex for left+right alignment */
+/* Blue header bar—flex with no wrap */
 .session-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: nowrap;
   background: #254a7d;
   color: #fff;
@@ -103,28 +103,31 @@ button:hover {
   font-weight: bold;
   font-size: 0.95em;
   font-family: Arial, sans-serif;
-  white-space: nowrap; /* prevent wrapping */
 }
 
+/* Left title */
 .session-bar .session-title {
-  flex: 1;
+  flex: 0 1 auto;
   text-align: left;
 }
 
+/* Optional location in center */
 .session-bar .session-location {
-  flex: 1;
+  flex: 0 1 auto;
   text-align: center;
   font-style: italic;
+  margin: 0 1em;
 }
 
+/* Right-aligned, non-wrapping time */
 .session-bar .session-time {
-  flex: 0 0 auto;
-  margin-left: auto;
-  white-space: nowrap; /* never wrap those characters */
+  flex: 0 0 auto;       /* do not grow or shrink */
+  margin-left: auto;    /* push to right edge */
+  white-space: nowrap;  /* never wrap the characters */
   text-align: right;
 }
 
-/* White body beneath each bar, bulleted and indented */
+/* White body under each bar, bulleted and indented */
 .session-body {
   background: #fff;
   list-style: disc inside;
