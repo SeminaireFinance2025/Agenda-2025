@@ -10,13 +10,13 @@
   <!-- html2pdf -->
   <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
 
-  <!-- Votre logique JS -->
+  <!-- Script principal -->
   <script src="script.js" defer></script>
 </head>
 <body>
   <h1>Générateur de planning PDF</h1>
 
-  <!-- ========= FORMULAIRE NOM / PRÉNOM ========= -->
+  <!-- ========= FORMULAIRE ========= -->
   <form id="nameForm">
     <input type="text" id="first_name" placeholder="Prénom" required />
     <input type="text" id="last_name"  placeholder="Nom"    required />
@@ -25,7 +25,7 @@
 
   <div id="feedback"></div>
 
-  <!-- ========= PLANNING (caché au départ) ========= -->
+  <!-- ========= PLANNING ========= -->
   <div id="planning" class="planning" style="display:none">
     <h2 class="planning-header">Mon planning personnalisé</h2>
 
@@ -38,7 +38,7 @@
       </div>
       <ul class="session-body">
         <li>Café d’accueil</li>
-        <li>Introduction de la journée: Salle A/C </li>
+        <li>Introduction de la journée&nbsp;: Salle A/C</li>
         <li>Présentation de l’agenda</li>
       </ul>
     </div>
@@ -47,11 +47,11 @@
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Actualités</span>
-        <span class="session-location"></span><!-- vide mais garde la place -->
+        <span class="session-location"></span>
         <span class="session-time">9h00</span>
       </div>
       <ul class="session-body">
-        <li> <strong id="g1" class="group-number"></strong></li>
+        <li>Groupe&nbsp;: <strong id="g1" class="group-number"></strong></li>
       </ul>
     </div>
 
@@ -59,11 +59,11 @@
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Témoignage</span>
-        <span class="session-location">Auditorium- Salle A/C</span>
+        <span class="session-location">Auditorium – Salle A/C</span>
         <span class="session-time">11h00</span>
       </div>
       <ul class="session-body">
-        <li>Témoignage de Fabrice LACROIX : DAF des JO de Paris 2024</li>
+        <li>Témoignage de Fabrice LACROIX&nbsp;: DAF des JO 2024</li>
       </ul>
     </div>
 
@@ -74,7 +74,6 @@
         <span class="session-location">Foyer</span>
         <span class="session-time">12h00</span>
       </div>
-      <!-- pas de corps nécessaire -->
     </div>
 
     <!-- 5) Présentations Concours Innovation -->
@@ -85,20 +84,20 @@
         <span class="session-time">13h15</span>
       </div>
       <ul class="session-body">
-      <li>Première partie : <strong id="g2"  class="group-number"></strong></li>
-      <li>Deuxième partie : <strong id="g2b" class="group-number"></strong></li>
+        <li>Première partie&nbsp;: groupe <strong id="g2"  class="group-number"></strong></li>
+        <li>Deuxième partie&nbsp;: groupe <strong id="g2b" class="group-number"></strong></li>
       </ul>
     </div>
 
-    <!-- 6) Témoignage Safran Cabin et Seats -->
+    <!-- 6) Témoignage Safran Cabin & Seats -->
     <div class="session">
       <div class="session-bar">
-        <span class="session-title">Témoignage Safran Cabin et Seats</span>
-        <span class="session-location">Auditorium- Salle A/C</span>
+        <span class="session-title">Témoignage Safran Cabin & Seats</span>
+        <span class="session-location">Auditorium – Salle A/C</span>
         <span class="session-time">15h15</span>
       </div>
       <ul class="session-body">
-        <li>Témoignage Safran Cabin et Seats</li>
+        <li>Témoignage Safran Cabin & Seats</li>
       </ul>
     </div>
 
@@ -110,19 +109,19 @@
         <span class="session-time">16h00</span>
       </div>
       <ul class="session-body">
-        <li> <strong id="g3" class="group-number"></strong></li>
+        <li>Groupe&nbsp;: <strong id="g3" class="group-number"></strong></li>
       </ul>
     </div>
 
-    <!-- 8) Concours innovation AWARD -->
+    <!-- 8) Concours Innovation AWARD -->
     <div class="session">
       <div class="session-bar">
-        <span class="session-title">Concours innovation awards</span>
-        <span class="session-location">Auditorium- Salle A/C </span>
+        <span class="session-title">Concours Innovation AWARD</span>
+        <span class="session-location">Auditorium – Salle A/C</span>
         <span class="session-time">17h00</span>
       </div>
       <ul class="session-body">
-        <li>Votez pour votre innovation préférée 
+        <li>Votez pour votre innovation préférée&nbsp;: 
             <a href="https://forms.office.com/e/GzAyJ9Ur32">ici</a>
         </li>
       </ul>
@@ -132,7 +131,7 @@
     <div class="session">
       <div class="session-bar">
         <span class="session-title">Conclusion</span>
-        <span class="session-location">Auditorium-Salle A/C</span>
+        <span class="session-location">Auditorium – Salle A/C</span>
         <span class="session-time">17h15</span>
       </div>
       <p class="session-footer">Fin de la journée à 17h30</p>
