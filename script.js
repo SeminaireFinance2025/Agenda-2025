@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("▶️ script.js initialized");
 
+  /* ————— Références DOM ————— */
   const form     = document.getElementById("nameForm");
   const firstIn  = document.getElementById("first_name");
   const lastIn   = document.getElementById("last_name");
@@ -8,12 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const planning = document.getElementById("planning");
   const g1       = document.getElementById("g1");
   const g2       = document.getElementById("g2");
+  const g2b      = document.getElementById("g2b");   // ← nouvelle référence
   const g3       = document.getElementById("g3");
   const download = document.getElementById("downloadPdf");
 
-  console.log({ form, firstIn, lastIn, feedback, planning, g1, g2, g3, download });
+  console.log({ form, firstIn, lastIn, feedback, planning, g1, g2, g2b, g3, download });
 
-  // 1) Fetch + fix NaN → "N/A"
+  /* ————— 1) Charger le JSON et remplacer les NaN ————— */
   fetch("./assignments.json")
     .then(res => {
       console.log("📥 fetch status:", res.status);
@@ -21,61 +23,49 @@ document.addEventListener("DOMContentLoaded", () => {
       return res.text();
     })
     .then(text => {
-      console.log("📄 raw JSON preview:", text.slice(0, 80));
       const fixed = text.replace(/\bNaN\b/g, '"N/A"');
       return JSON.parse(fixed);
     })
     .then(assignments => {
       console.log("✅ Parsed", Object.keys(assignments).length, "entries");
 
-      // 2) Wire up form submission
+      /* ————— 2) Soumission du formulaire ————— */
       form.addEventListener("submit", ev => {
         ev.preventDefault();
         feedback.textContent = "";
 
-        // normalize accents + lowercase
-        function normalize(str) {
-          return str
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .trim()
-            .toLowerCase();
-        }
+        const normalize = s =>
+          s.normalize("NFD")
+           .replace(/[\u0300-\u036f]/g, "")
+           .trim()
+           .toLowerCase();
 
         const first = normalize(firstIn.value);
         const last  = normalize(lastIn.value);
-        console.log("👤 Inputs:", first, last);
-
         if (!first || !last) {
           feedback.textContent = "Merci de remplir prénom et nom.";
           return;
         }
 
-        const key = first + " " + last;
-        console.log("🔑 Lookup key:", key);
-
+        const key  = `${first} ${last}`;
         const user = assignments[key];
-        console.log("🔍 Lookup result:", user);
-
         if (!user) {
           feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
           return;
         }
 
-        // 3) Populate planning
-        g1.textContent = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
-        g2.textContent = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
-        g3.textContent = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
-        document.getElementById("g2b").textContent = spans.g2.textContent;
+        /* ————— 3) Injection des groupes ————— */
+        g1.textContent  = user.act1 === "N/A" ? "N/A"         : `Groupe ${user.act1}`;
+        g2.textContent  = user.act2 === "N/A" ? "N/A"         : `Groupe ${user.act2}`;
+        g2b.textContent = g2.textContent; // même numéro pour 2e partie
+        g3.textContent  = user.act3 === "N/A" ? "N/A"         : `Groupe ${user.act3}`;
+
         planning.style.display = "block";
 
-        // 4) PDF download
+        /* ————— 4) Téléchargement PDF ————— */
         download.onclick = () => {
           html2pdf()
-            .set({
-              margin: 0.5,
-              filename: `planning_${first}_${last}.pdf`,
-            })
+            .set({ margin: 0.5, filename: `planning_${first}_${last}.pdf` })
             .from(planning)
             .save();
         };
