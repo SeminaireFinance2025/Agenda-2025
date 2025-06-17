@@ -64,10 +64,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* ————— 4) Téléchargement PDF ————— */
         download.onclick = () => {
-          html2pdf()
-            .set({ margin: 0.5, filename: `planning_${first}_${last}.pdf` })
-            .from(planning)
-            .save();
+          const opt = {
+            margin: 10,                          // 10 mm sur chaque bord
+            filename: `planning_${first}_${last}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['avoid-all'] }   // ne coupe aucun bloc
+          };
+
+          html2pdf().set(opt).from(planning).save();
         };
       });
     })
