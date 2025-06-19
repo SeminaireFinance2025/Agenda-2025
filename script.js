@@ -45,12 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
           feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
           return;
         }
-
-        /* ─── 3) Titre personnalisé ───────────────────────────────── */
+        /* ---- 3) Titre personnalisé ---- */
         const formatName = (p, n) =>
           p.charAt(0).toUpperCase() + p.slice(1).toLowerCase() + " " + n.toUpperCase();
-        const fullName = formatName(firstIn.value.trim(), lastIn.value.trim());
-        planTitle.textContent = `Séminaire Finance 2025 - ${fullName}`;
+        
+        document.getElementById("titleLine1").textContent = "Séminaire Finance 2025";
+        document.getElementById("titleLine2").textContent =
+          formatName(firstIn.value.trim(), lastIn.value.trim());
 
         /* ─── 4) Injecter groupes + salles ─────────────────────────── */
         g1.textContent  = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
