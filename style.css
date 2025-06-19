@@ -2,7 +2,7 @@
    GLOBAL RESET & BASE
    ========================================================================== */
 html, body { margin:0; padding:0; }
-:root{ --card-max-w: 680px; }                   /* ≈ 180 mm */
+:root{ --card-max-w: 680px; } /* 680 px ≃ 180 mm */
 body{
   background:#191970;
   color:#fff;
@@ -146,26 +146,24 @@ button:hover{ background:#003f7f; }
 /* ==========================================================================
    PRINT / PDF
    ========================================================================== */
-@page{ margin:5mm; }                             /* marges externes */
+@page{ margin:5mm; } /* marge externe minimale */
 
 @media print{
-  /* Carte ≤ 180 mm = var(--card-max-w) */
-  #planning{ max-width:var(--card-max-w); margin:0 auto; font-size:0.9em; }
+  /* carte = largeur fixe, police 10 % plus petite */
+  #planning{
+    max-width:var(--card-max-w);
+    margin:0 auto;
+    font-size:0.9em;
+  }
 
-  /* compacter la barre et la liste */
-  .session-bar{
-    padding:.25em .6em;
-    font-size:.8em;
-  }
-  .session-body{
-    padding:.5em .9em .5em 1.3em;
-  }
+  /* compactage */
+  .session-bar{ padding:.25em .6em; font-size:.8em; }
+  .session-body{ padding:.5em .9em .5em 1.3em; }
   .session-body li{ margin-bottom:.3em; }
 
-  /* cacher le grand titre de la page */
-  h1{ display:none; }
+  /* cache le gros titre + bouton */
+  h1, #downloadPdf, form{ display:none; }
 
-  /* éviter de couper à l’intérieur d’une session,
-     mais laisser html2pdf diviser la carte si besoin */
+  /* évite de couper une session au milieu */
   .session{ break-inside:avoid; }
 }
