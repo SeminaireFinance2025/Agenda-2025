@@ -14,22 +14,22 @@
     "act2": 3.0,
     "act3": 1.0
   },
-  "mélissa collard": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+  "melissa collard": {
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "vanessa palomba": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "gabriel canet": {
     "act1": 2.0,
     "act2": 2.0,
     "act3": 2.0
   },
-  "aurélie chambon": {
+  "aurelie chambon": {
     "act1": 3.0,
     "act2": 3.0,
     "act3": 2.0
@@ -42,7 +42,7 @@
   "carole dupont": {
     "act1": 2.0,
     "act2": 1.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "eric le landais": {
     "act1": 2.0,
@@ -80,34 +80,29 @@
     "act3": 2.0
   },
   "nicolas loiez": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "lucie le baron": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "alexis boudjemaa": {
     "act1": 2.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "nicolas coster": {
     "act1": 1.0,
     "act2": 1.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "eric hamon": {
     "act1": 2.0,
     "act2": 3.0,
     "act3": 2.0
-  },
-  "sandrine hamour": {
-    "act1": 3.0,
-    "act2": 4.0,
-    "act3": NaN
   },
   "jerome marion": {
     "act1": 2.0,
@@ -117,12 +112,12 @@
   "adam sova": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "cyril baume": {
     "act1": 3.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "sidney giraud": {
     "act1": 2.0,
@@ -132,7 +127,7 @@
   "stefan mangels": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "marc pelle": {
     "act1": 2.0,
@@ -152,7 +147,7 @@
   "anne vanhoutte": {
     "act1": 1.0,
     "act2": 1.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "kevin wong": {
     "act1": 3.0,
@@ -167,17 +162,12 @@
   "laura chouzy": {
     "act1": 3.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "sandra coutant": {
     "act1": 3.0,
     "act2": 3.0,
     "act3": 2.0
-  },
-  "clemence dambreville": {
-    "act1": 3.0,
-    "act2": 4.0,
-    "act3": NaN
   },
   "antoine dragon": {
     "act1": 2.0,
@@ -192,22 +182,17 @@
   "yannick hoffmann": {
     "act1": 2.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "nicolas lafon": {
     "act1": 2.0,
     "act2": 3.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "frederic langenfeld": {
     "act1": 2.0,
     "act2": 4.0,
     "act3": 2.0
-  },
-  "lorraine lecussan": {
-    "act1": 2.0,
-    "act2": 5.0,
-    "act3": NaN
   },
   "ludovic levannier": {
     "act1": 2.0,
@@ -217,14 +202,14 @@
   "pierre syx": {
     "act1": 1.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "adrien viaud": {
     "act1": 2.0,
     "act2": 3.0,
     "act3": 2.0
   },
-  "valérie baillat": {
+  "valerie baillat": {
     "act1": 2.0,
     "act2": 4.0,
     "act3": 2.0
@@ -232,7 +217,7 @@
   "nathalie boschetti": {
     "act1": 2.0,
     "act2": 5.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "fabien cier": {
     "act1": 3.0,
@@ -242,7 +227,7 @@
   "alexandre moutet": {
     "act1": 2.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "alexis mehrenberger": {
     "act1": 3.0,
@@ -262,7 +247,7 @@
   "james wilson": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": 1.0
+    "act3": 2.0
   },
   "julie boyer": {
     "act1": 2.0,
@@ -272,7 +257,7 @@
   "bertrand cochelin": {
     "act1": 2.0,
     "act2": 1.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "catherine constantin": {
     "act1": 3.0,
@@ -287,7 +272,7 @@
   "stanislas feixas": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "karine labat": {
     "act1": 2.0,
@@ -297,27 +282,27 @@
   "freddy roques": {
     "act1": 3.0,
     "act2": 3.0,
-    "act3": NaN
+    "act3": 1.0
   },
-  "céline marsaguet": {
+  "celine marsaguet": {
     "act1": 3.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "valerie sobreira": {
-    "act1": NaN,
-    "act2": NaN,
+    "act1": null,
+    "act2": null,
     "act3": 2.0
   },
   "olivier blat": {
     "act1": 1.0,
     "act2": 3.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "marina gourdon-dubant": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 2.0
   },
   "geoffroy basset chercot": {
     "act1": 2.0,
@@ -329,25 +314,20 @@
     "act2": 2.0,
     "act3": 2.0
   },
-  "pierre-marie soyer": {
-    "act1": 2.0,
-    "act2": 3.0,
-    "act3": NaN
-  },
   "sandra mellier": {
     "act1": 3.0,
     "act2": 4.0,
     "act3": 2.0
   },
   "lohan alazard": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "alexandre rudolf": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "elisabeth palacio": {
     "act1": 3.0,
@@ -367,7 +347,7 @@
   "sophie barbay": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "nathalie le talaer": {
     "act1": 2.0,
@@ -377,7 +357,7 @@
   "eric fouquay": {
     "act1": 2.0,
     "act2": 1.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "coralie fournier": {
     "act1": 2.0,
@@ -394,20 +374,25 @@
     "act2": 4.0,
     "act3": 1.0
   },
+  "pascal bantegnie": {
+    "act1": 1.0,
+    "act2": 1.0,
+    "act3": 1.0
+  },
   "antoine duverger": {
     "act1": 1.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "anne aupic": {
     "act1": 3.0,
     "act2": 3.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "christine basse": {
     "act1": 3.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "gildas bodolec": {
     "act1": 1.0,
@@ -426,8 +411,8 @@
   },
   "jean-claude elbazis": {
     "act1": 3.0,
-    "act2": 3.0,
-    "act3": NaN
+    "act2": 1.0,
+    "act3": 1.0
   },
   "nicolas gueguen": {
     "act1": 2.0,
@@ -437,12 +422,12 @@
   "christian guichardiere": {
     "act1": 1.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "sie hien": {
     "act1": 3.0,
     "act2": 3.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "aida locquette": {
     "act1": 2.0,
@@ -454,25 +439,20 @@
     "act2": 5.0,
     "act3": 2.0
   },
-  "eugénie hercouet": {
+  "eugenie hercouet": {
     "act1": 3.0,
     "act2": 1.0,
     "act3": 1.0
   },
-  "pascal picavet": {
-    "act1": 1.0,
-    "act2": 2.0,
-    "act3": NaN
-  },
   "nicolas pozniak": {
     "act1": 3.0,
-    "act2": 3.0,
+    "act2": 1.0,
     "act3": 2.0
   },
   "emmanuel quil": {
     "act1": 2.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "ely rakotobe": {
     "act1": 3.0,
@@ -487,7 +467,7 @@
   "francine royer cailleaux": {
     "act1": 1.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "nicolas salle": {
     "act1": 2.0,
@@ -502,7 +482,7 @@
   "marie anne michon": {
     "act1": 2.0,
     "act2": 5.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "loyse faroux": {
     "act1": 1.0,
@@ -512,27 +492,17 @@
   "marjorie clement": {
     "act1": 3.0,
     "act2": 2.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "cecile chauvin": {
     "act1": 3.0,
     "act2": 3.0,
-    "act3": NaN
-  },
-  "alexandre lieury": {
-    "act1": 3.0,
-    "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "philippe carbonnel": {
     "act1": 3.0,
     "act2": 5.0,
-    "act3": NaN
-  },
-  "marine guerret": {
-    "act1": 3.0,
-    "act2": 1.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "baptiste delpierre": {
     "act1": 3.0,
@@ -542,7 +512,7 @@
   "jeremy hallebard": {
     "act1": 3.0,
     "act2": 4.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "paul roger-machart": {
     "act1": 2.0,
@@ -555,9 +525,9 @@
     "act3": 2.0
   },
   "hugo satabin": {
-    "act1": NaN,
-    "act2": NaN,
-    "act3": NaN
+    "act1": null,
+    "act2": null,
+    "act3": 1.0
   },
   "albin deleuze": {
     "act1": 2.0,
@@ -567,7 +537,7 @@
   "frederic lassalle": {
     "act1": 1.0,
     "act2": 1.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "frederic poncet": {
     "act1": 3.0,
@@ -577,7 +547,7 @@
   "benoit de la tour du pin": {
     "act1": 3.0,
     "act2": 5.0,
-    "act3": NaN
+    "act3": 1.0
   },
   "sophie berthelier": {
     "act1": 1.0,
