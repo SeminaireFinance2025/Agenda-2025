@@ -108,7 +108,7 @@ button:hover{ background:#003f7f; }
 
 /* Room name (salle) */
 .room-name {
-  color:#555;
+  color:#0056b3;
   font-style:italic;
   margin-left:.25em;   /* petit espace avant la salle */
 }
