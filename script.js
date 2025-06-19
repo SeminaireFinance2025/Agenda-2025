@@ -68,12 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
         /* ————— 4) Téléchargement PDF ————— */
         download.onclick = () => {
           html2pdf().set({
-            margin: 10,
+            margin: 5,                               // ← marges réduites
             filename: `planning_${first}_${last}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
+            html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all'] }
+            pagebreak: { mode: ['avoid-all'] }       // on garde une seule page
           }).from(planning).save();
         };
       });
