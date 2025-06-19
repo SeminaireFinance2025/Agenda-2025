@@ -1,38 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("▶️ script.js initialized");
+  /* ─── Références DOM ─────────────────────────────────────────────── */
+  const form      = document.getElementById("nameForm");
+  const firstIn   = document.getElementById("first_name");
+  const lastIn    = document.getElementById("last_name");
+  const feedback  = document.getElementById("feedback");
+  const planning  = document.getElementById("planning");
+  const planTitle = document.getElementById("planTitle");   // ← nouveau
 
-  /* ————— Références DOM ————— */
-  const form     = document.getElementById("nameForm");
-  const firstIn  = document.getElementById("first_name");
-  const lastIn   = document.getElementById("last_name");
-  const feedback = document.getElementById("feedback");
-  const planning = document.getElementById("planning");
-
-  const g1       = document.getElementById("g1");
-  const g1room   = document.getElementById("g1room");   // salle act1
-  const g2       = document.getElementById("g2");
-  const g2b      = document.getElementById("g2b");
-  const g3       = document.getElementById("g3");
-  const g3room   = document.getElementById("g3room");   // salle act3
-
+  const g1      = document.getElementById("g1");
+  const g1room  = document.getElementById("g1room");
+  const g2      = document.getElementById("g2");
+  const g2b     = document.getElementById("g2b");
+  const g3      = document.getElementById("g3");
+  const g3room  = document.getElementById("g3room");
   const download = document.getElementById("downloadPdf");
 
-  console.log({ form, firstIn, lastIn, g1, g1room, g2, g2b, g3, g3room });
+  /* ─── Tables groupe → salle ──────────────────────────────────────── */
+  const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B" };
+  const roomsAct3 = { 1: "Salle D", 2: "Salle A/C" };
 
-  /* ————— Tables groupe → salle ————— */
-  const roomsAct1 = { 1: "Maison",      2: "Salle A/C", 3: "Salle B"  }; // Actualités
-  const roomsAct3 = { 1: "Salle D",     2: "Salle A/C"               }; // Conférences
-
-  /* ————— 1) Charger le JSON et corriger les NaN ————— */
+  /* ─── 1) Charger le JSON & corriger les NaN ─────────────────────── */
   fetch("./assignments.json")
-    .then(res => {
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return res.text();
-    })
+    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
     .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
     .then(assignments => {
 
-      /* ————— 2) Soumission formulaire ————— */
+      /* ─── 2) Soumission du formulaire ────────────────────────────── */
       form.addEventListener("submit", ev => {
         ev.preventDefault();
         feedback.textContent = "";
@@ -40,54 +33,55 @@ document.addEventListener("DOMContentLoaded", () => {
         const normalize = s =>
           s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 
-        const first = normalize(firstIn.value);
-        const last  = normalize(lastIn.value);
-        if (!first || !last) {
+        const firstNorm = normalize(firstIn.value);
+        const lastNorm  = normalize(lastIn.value);
+        if (!firstNorm || !lastNorm) {
           feedback.textContent = "Merci de remplir prénom et nom.";
           return;
         }
 
-        const user = assignments[`${first} ${last}`];
+        const user = assignments[`${firstNorm} ${lastNorm}`];
         if (!user) {
           feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
           return;
         }
 
-        /* ————— 3) Injecter groupes + salles ————— */
-        g1.textContent = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
+        /* ─── 3) Titre personnalisé ───────────────────────────────── */
+        const formatName = (p, n) =>
+          p.charAt(0).toUpperCase() + p.slice(1).toLowerCase() + " " + n.toUpperCase();
+        const fullName = formatName(firstIn.value.trim(), lastIn.value.trim());
+        planTitle.textContent = `Séminaire Finance 2025 - ${fullName}`;
+
+        /* ─── 4) Injecter groupes + salles ─────────────────────────── */
+        g1.textContent  = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
         g1room.textContent = roomsAct1[user.act1] || "";
 
         g2.textContent  = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
-        g2b.textContent = g2.textContent;                           // même numéro
+        g2b.textContent = g2.textContent;
 
-        g3.textContent = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
+        g3.textContent  = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
         g3room.textContent = roomsAct3[user.act3] || "";
 
         planning.style.display = "block";
 
-        /* ————— 4) Téléchargement PDF ————— */
+        /* ─── 5) Téléchargement PDF ────────────────────────────────── */
         download.onclick = () => {
-          const element = planning;                    // carte entière
-          const dpi     = 96;                          // html2canvas par défaut
-          const mm      = v => v * 25.4 / dpi;         // px → mm
-        
+          const element = planning;
+          const dpi     = 96;
+          const mm      = v => v * 25.4 / dpi;   // px → mm
+
           html2pdf().from(element).set({
             html2canvas: { scale: 2, useCORS: true }
           })
           .toPdf()
           .get('pdf')
           .then(pdf => {
-            // taille exacte du canvas (px) fournie par html2canvas
-            const { width, height } = pdf.internal.pageSize;
-        
-            // remplace la page par un format custom (portrait)
-            const wMM = mm(element.offsetWidth  * 2);  // *2 car scale = 2
+            const wMM = mm(element.offsetWidth  * 2); // scale=2
             const hMM = mm(element.offsetHeight * 2);
-        
             pdf.internal.pageSize.setWidth (wMM);
             pdf.internal.pageSize.setHeight(hMM);
           })
-          .save(`planning_${first}_${last}.pdf`);
+          .save(`planning_${firstNorm}_${lastNorm}.pdf`);
         };
       });
     })
