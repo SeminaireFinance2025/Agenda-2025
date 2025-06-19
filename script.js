@@ -7,38 +7,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const lastIn   = document.getElementById("last_name");
   const feedback = document.getElementById("feedback");
   const planning = document.getElementById("planning");
+
   const g1       = document.getElementById("g1");
+  const g1room   = document.getElementById("g1room");   // salle act1
   const g2       = document.getElementById("g2");
-  const g2b      = document.getElementById("g2b");   // ← nouvelle référence
+  const g2b      = document.getElementById("g2b");
   const g3       = document.getElementById("g3");
+  const g3room   = document.getElementById("g3room");   // salle act3
+
   const download = document.getElementById("downloadPdf");
 
-  console.log({ form, firstIn, lastIn, feedback, planning, g1, g2, g2b, g3, download });
+  console.log({ form, firstIn, lastIn, g1, g1room, g2, g2b, g3, g3room });
 
-  /* ————— 1) Charger le JSON et remplacer les NaN ————— */
+  /* ————— Tables groupe → salle ————— */
+  const roomsAct1 = { 1: "Maison",      2: "Salle A/C", 3: "Salle B"  }; // Actualités
+  const roomsAct3 = { 1: "Salle D",     2: "Salle A/C"               }; // Conférences
+
+  /* ————— 1) Charger le JSON et corriger les NaN ————— */
   fetch("./assignments.json")
     .then(res => {
-      console.log("📥 fetch status:", res.status);
       if (!res.ok) throw new Error("HTTP " + res.status);
       return res.text();
     })
-    .then(text => {
-      const fixed = text.replace(/\bNaN\b/g, '"N/A"');
-      return JSON.parse(fixed);
-    })
+    .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
     .then(assignments => {
-      console.log("✅ Parsed", Object.keys(assignments).length, "entries");
 
-      /* ————— 2) Soumission du formulaire ————— */
+      /* ————— 2) Soumission formulaire ————— */
       form.addEventListener("submit", ev => {
         ev.preventDefault();
         feedback.textContent = "";
 
         const normalize = s =>
-          s.normalize("NFD")
-           .replace(/[\u0300-\u036f]/g, "")
-           .trim()
-           .toLowerCase();
+          s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
 
         const first = normalize(firstIn.value);
         const last  = normalize(lastIn.value);
@@ -47,38 +47,39 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const key  = `${first} ${last}`;
-        const user = assignments[key];
+        const user = assignments[`${first} ${last}`];
         if (!user) {
-          feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
+          feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe.";
           return;
         }
 
-        /* ————— 3) Injection des groupes ————— */
-        g1.textContent  = user.act1 === "N/A" ? "N/A"         : `Groupe ${user.act1}`;
-        g2.textContent  = user.act2 === "N/A" ? "N/A"         : `Groupe ${user.act2}`;
-        g2b.textContent = g2.textContent; // même numéro pour 2e partie
-        g3.textContent  = user.act3 === "N/A" ? "N/A"         : `Groupe ${user.act3}`;
+        /* ————— 3) Injecter groupes + salles ————— */
+        g1.textContent = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
+        g1room.textContent = roomsAct1[user.act1] || "";
+
+        g2.textContent  = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
+        g2b.textContent = g2.textContent;                           // même numéro
+
+        g3.textContent = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
+        g3room.textContent = roomsAct3[user.act3] || "";
 
         planning.style.display = "block";
 
         /* ————— 4) Téléchargement PDF ————— */
         download.onclick = () => {
-          const opt = {
-            margin: 10,                          // 10 mm sur chaque bord
+          html2pdf().set({
+            margin: 10,
             filename: `planning_${first}_${last}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all'] }   // ne coupe aucun bloc
-          };
-
-          html2pdf().set(opt).from(planning).save();
+            pagebreak: { mode: ['avoid-all'] }
+          }).from(planning).save();
         };
       });
     })
     .catch(err => {
-      console.error("❌ JSON load/parse failed:", err);
+      console.error(err);
       feedback.textContent = "Impossible de charger les affectations : " + err.message;
     });
 });
