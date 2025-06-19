@@ -73,9 +73,16 @@ button:hover{ background:#003f7f; }
   font-weight:bold;
   font-size:.95em;
 }
-.session-bar .session-title   { flex:1 1 auto; text-align:left; }
-.session-bar .session-location{ flex:0 0 auto; font-style:italic; margin-right:.4em; }
-.session-bar .session-time    { flex:0 0 auto; white-space:nowrap; }
+.session-bar .session-title { flex:1 1 auto; text-align:left; }
+
+.session-bar .session-location{
+  flex:0 0 auto;
+  font-style:italic;
+  margin-right:.4em;
+  color:#6EC1FF;          /* ← bleu clair pour Auditorium / Foyer / etc. */
+}
+
+.session-bar .session-time  { flex:0 0 auto; white-space:nowrap; }
 
 /* White body under bar */
 .session-body{
@@ -106,14 +113,14 @@ button:hover{ background:#003f7f; }
 /* Group number highlight */
 .group-number{ color:#0056b3; font-weight:bold; }
 
-/* Room name (salle) — même couleur que group-number */
+/* Room name (salle) */
 .room-name{
   font-style:italic;
   margin-left:.25em;
 }
-/* priorité plus haute pour écraser le noir hérité */
+/* Force bleu clair pour la salle */
 .session-body .room-name{
-  color:#0056b3 !important;
+  color:#6EC1FF !important;
 }
 
 /* Download button */
@@ -148,8 +155,8 @@ button:hover{ background:#003f7f; }
    PRINT / PDF
    ========================================================================== */
 @media print{
-  #planning{ max-width:180mm; }   /* carte ≤ 180 mm */
+  #planning{ max-width:180mm; }         /* carte ≤ 180 mm */
 
-  /* Saut de page manuel possible avec <div class="session-break"></div> */
+  /* Saut de page manuel : <div class="session-break"></div> */
   .session-break{ page-break-before:always; }
 }
