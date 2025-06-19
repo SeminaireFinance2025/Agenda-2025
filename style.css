@@ -56,6 +56,31 @@ button:hover{ background:#003f7f; }
   margin-bottom:1em;
   color:#254a7d;
 }
+/* ---------- en-tête flex + logo ---------- */
+.plan-header{
+  position:relative;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:1.5em;
+}
+
+.plan-titles h2,
+.plan-titles h3{
+  margin:0;
+  line-height:1.2;
+}
+
+.plan-titles h2{ font-size:1.3em; color:#254a7d; }  /* 1re ligne */
+.plan-titles h3{ font-size:1.1em; }                 /* 2e ligne */
+
+.plan-logo{
+  position:absolute;
+  top:0;               /* coin haut-droit */
+  right:0;
+  width:80px;          /* adapte si besoin */
+  height:auto;
+}
 
 /* ==========================================================================
    SESSION BLOCK
