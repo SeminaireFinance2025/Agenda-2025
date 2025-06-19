@@ -72,6 +72,11 @@ button:hover{ background:#003f7f; }
   color:#254a7d;           /* même bleu pour les deux lignes */
 }
 
+.plan-titles{
+  text-align:center;   /* ← centre h2 & h3 */
+}
+
+
 .plan-titles h2{ font-size:1.3em; font-weight:bold; }
 .plan-titles h3{ font-size:1.1em; font-weight:bold; }
 
