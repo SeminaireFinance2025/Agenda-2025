@@ -56,29 +56,30 @@ button:hover{ background:#003f7f; }
   margin-bottom:1em;
   color:#254a7d;
 }
-/* ---------- en-tête flex + logo ---------- */
+/* ───── En-tête du planning avec logo ──────────────────────────────── */
 .plan-header{
   position:relative;
   display:flex;
-  justify-content:center;
-  align-items:center;
+  justify-content:center;  /* titres bien au centre */
+  align-items:flex-start;  /* on aligne le haut */
   margin-bottom:1.5em;
 }
 
 .plan-titles h2,
 .plan-titles h3{
   margin:0;
-  line-height:1.2;
+  line-height:1.25;
+  color:#254a7d;           /* même bleu pour les deux lignes */
 }
 
-.plan-titles h2{ font-size:1.3em; color:#254a7d; }  /* 1re ligne */
-.plan-titles h3{ font-size:1.1em; }                 /* 2e ligne */
+.plan-titles h2{ font-size:1.3em; font-weight:bold; }
+.plan-titles h3{ font-size:1.1em; font-weight:bold; }
 
 .plan-logo{
   position:absolute;
-  top:0;               /* coin haut-droit */
+  top:-8px;                /* remonte un peu le logo */
   right:0;
-  width:80px;          /* adapte si besoin */
+  width:80px;              /* adapte si besoin */
   height:auto;
 }
 
