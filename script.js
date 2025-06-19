@@ -67,14 +67,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /* ————— 4) Téléchargement PDF ————— */
         download.onclick = () => {
-          html2pdf().set({
-            margin: 5,                               // ← marges réduites
-            filename: `planning_${first}_${last}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all'] }       // on garde une seule page
-          }).from(planning).save();
+          const element = planning;                    // carte entière
+          const dpi     = 96;                          // html2canvas par défaut
+          const mm      = v => v * 25.4 / dpi;         // px → mm
+        
+          html2pdf().from(element).set({
+            html2canvas: { scale: 2, useCORS: true }
+          })
+          .toPdf()
+          .get('pdf')
+          .then(pdf => {
+            // taille exacte du canvas (px) fournie par html2canvas
+            const { width, height } = pdf.internal.pageSize;
+        
+            // remplace la page par un format custom (portrait)
+            const wMM = mm(element.offsetWidth  * 2);  // *2 car scale = 2
+            const hMM = mm(element.offsetHeight * 2);
+        
+            pdf.internal.pageSize.setWidth (wMM);
+            pdf.internal.pageSize.setHeight(hMM);
+          })
+          .save(`planning_${first}_${last}.pdf`);
         };
       });
     })
