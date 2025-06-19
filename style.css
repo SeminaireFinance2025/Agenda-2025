@@ -2,6 +2,10 @@
    GLOBAL RESET & BASE
    ========================================================================== */
 html, body { margin:0; padding:0; }
+:root{
+  /* 180 mm × 3.78 = 680 px  → même largeur sur écran & PDF */
+  --card-max-w: 680px;
+}
 body{
   background:#191970;
   color:#fff;
@@ -24,7 +28,7 @@ form,
   box-shadow:0 2px 8px rgba(0,0,0,.2);
   margin:1em auto;
   width:100%;
-  max-width:600px;
+  max-width:var(--card-max-w);
   word-break:break-word;
 }
 input,button{
@@ -48,7 +52,7 @@ button:hover{ background:#003f7f; }
 /* ==========================================================================
    PLANNING WRAPPER
    ========================================================================== */
-#planning{ max-width:700px; margin:2em auto; text-align:left; }
+#planning{ margin:2em auto; text-align:left; }
 .planning-header{
   font-style:italic;
   text-align:center;
@@ -74,14 +78,12 @@ button:hover{ background:#003f7f; }
   font-size:.95em;
 }
 .session-bar .session-title { flex:1 1 auto; text-align:left; }
-
 .session-bar .session-location{
   flex:0 0 auto;
   font-style:italic;
   margin-right:.4em;
-  color:#6EC1FF;          /* ← bleu clair pour Auditorium / Foyer / etc. */
+  color:#6EC1FF;              /* bleu clair visible sur bleu marine  */
 }
-
 .session-bar .session-time  { flex:0 0 auto; white-space:nowrap; }
 
 /* White body under bar */
@@ -89,8 +91,7 @@ button:hover{ background:#003f7f; }
   background:#fff;
   list-style:disc inside;
   margin:0;
-  padding:.8em 1em;
-  padding-left:1.5em;
+  padding:.8em 1em  .8em 1.5em;
   border:1px solid #ccc;
   border-top:none;
   border-radius:0 0 6px 6px;
@@ -98,7 +99,7 @@ button:hover{ background:#003f7f; }
 }
 .session-body li{ margin-bottom:.5em; line-height:1.4; }
 
-/* Footer block */
+/* Footer */
 .session-footer{
   background:#fff;
   padding:.8em 1em;
@@ -110,20 +111,17 @@ button:hover{ background:#003f7f; }
   font-style:italic;
 }
 
-/* Group number highlight */
+/* Group number & room highlight */
 .group-number{ color:#0056b3; font-weight:bold; }
-
-/* Room name (salle) */
 .room-name{
   font-style:italic;
   margin-left:.25em;
-}
-/* Force bleu clair pour la salle */
-.session-body .room-name{
-  color:#6EC1FF !important;
+  color:#6EC1FF !important;   /* même bleu clair que location */
 }
 
-/* Download button */
+/* ==========================================================================
+   DOWNLOAD BUTTON
+   ========================================================================== */
 #downloadPdf,
 .download-btn{
   display:block;
@@ -145,17 +143,23 @@ button:hover{ background:#003f7f; }
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
-@media(max-width:480px){
+@media (max-width:480px){
   body{ padding:1em; }
   form,#planning{ padding:1em; }
   .session-bar,.session-body{ font-size:.9em; }
+}
+
+/* Réduit encore le padding sur très petit mobile (≤320 px) */
+@media (max-width:320px){
+  form,#planning{ padding:.6em; }
 }
 
 /* ==========================================================================
    PRINT / PDF
    ========================================================================== */
 @media print{
-  #planning{ max-width:180mm; }         /* carte ≤ 180 mm */
+  /* même largeur que l’écran desktop → correspond à 180 mm */
+  #planning{ max-width:var(--card-max-w); }
 
   /* Saut de page manuel : <div class="session-break"></div> */
   .session-break{ page-break-before:always; }
