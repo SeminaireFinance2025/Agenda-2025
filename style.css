@@ -2,10 +2,7 @@
    GLOBAL RESET & BASE
    ========================================================================== */
 html, body { margin:0; padding:0; }
-:root{
-  /* 180 mm × 3.78 = 680 px  → même largeur sur écran & PDF */
-  --card-max-w: 680px;
-}
+:root{ --card-max-w: 680px; }                   /* ≈ 180 mm */
 body{
   background:#191970;
   color:#fff;
@@ -65,7 +62,7 @@ button:hover{ background:#003f7f; }
    ========================================================================== */
 .session{ margin-bottom:1em; }
 
-/* Blue header bar : title | location | time */
+/* Blue header bar */
 .session-bar{
   display:flex;
   align-items:center;
@@ -82,16 +79,16 @@ button:hover{ background:#003f7f; }
   flex:0 0 auto;
   font-style:italic;
   margin-right:.4em;
-  color:#6EC1FF;              /* bleu clair visible sur bleu marine  */
+  color:#6EC1FF;
 }
-.session-bar .session-time  { flex:0 0 auto; white-space:nowrap; }
+.session-bar .session-time{ flex:0 0 auto; white-space:nowrap; }
 
 /* White body under bar */
 .session-body{
   background:#fff;
   list-style:disc inside;
   margin:0;
-  padding:.8em 1em  .8em 1.5em;
+  padding:.8em 1em .8em 1.5em;
   border:1px solid #ccc;
   border-top:none;
   border-radius:0 0 6px 6px;
@@ -111,19 +108,14 @@ button:hover{ background:#003f7f; }
   font-style:italic;
 }
 
-/* Group number & room highlight */
+/* Highlights */
 .group-number{ color:#0056b3; font-weight:bold; }
-.room-name{
-  font-style:italic;
-  margin-left:.25em;
-  color:#6EC1FF !important;   /* même bleu clair que location */
-}
+.room-name{ font-style:italic; margin-left:.25em; color:#6EC1FF !important; }
 
 /* ==========================================================================
    DOWNLOAD BUTTON
    ========================================================================== */
-#downloadPdf,
-.download-btn{
+#downloadPdf{
   display:block;
   margin:1.5em auto;
   padding:.8em 1.2em;
@@ -137,30 +129,43 @@ button:hover{ background:#003f7f; }
   letter-spacing:.05em;
   transition:background-color .2s ease;
 }
-#downloadPdf:hover,
-.download-btn:hover{ background:#1e3f6f; }
+#downloadPdf:hover{ background:#1e3f6f; }
 
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
-@media (max-width:480px){
+@media(max-width:480px){
   body{ padding:1em; }
   form,#planning{ padding:1em; }
   .session-bar,.session-body{ font-size:.9em; }
 }
-
-/* Réduit encore le padding sur très petit mobile (≤320 px) */
-@media (max-width:320px){
+@media(max-width:320px){
   form,#planning{ padding:.6em; }
 }
 
 /* ==========================================================================
    PRINT / PDF
    ========================================================================== */
-@media print{
-  /* même largeur que l’écran desktop → correspond à 180 mm */
-  #planning{ max-width:var(--card-max-w); }
+@page{ margin:5mm; }                             /* marges externes */
 
-  /* Saut de page manuel : <div class="session-break"></div> */
-  .session-break{ page-break-before:always; }
+@media print{
+  /* Carte ≤ 180 mm = var(--card-max-w) */
+  #planning{ max-width:var(--card-max-w); margin:0 auto; font-size:0.9em; }
+
+  /* compacter la barre et la liste */
+  .session-bar{
+    padding:.25em .6em;
+    font-size:.8em;
+  }
+  .session-body{
+    padding:.5em .9em .5em 1.3em;
+  }
+  .session-body li{ margin-bottom:.3em; }
+
+  /* cacher le grand titre de la page */
+  h1{ display:none; }
+
+  /* éviter de couper à l’intérieur d’une session,
+     mais laisser html2pdf diviser la carte si besoin */
+  .session{ break-inside:avoid; }
 }
