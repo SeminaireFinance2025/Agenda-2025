@@ -174,27 +174,26 @@ button:hover{ background:#003f7f; }
   form,#planning{ padding:.6em; }
 }
 
-/* ==========================================================================
-   PRINT / PDF
-   ========================================================================== */
-@page{ margin:5mm; } /* marge externe minimale */
+/* ==================================================================
+   PRINT / PDF – compact & coupe propre
+   ================================================================== */
+@page { margin:5mm; }
 
 @media print{
-  /* carte = largeur fixe, police 10 % plus petite */
   #planning{
-    max-width:var(--card-max-w);
+    max-width:var(--card-max-w); /* 680 px ≈ 180 mm */
     margin:0 auto;
-    font-size:0.9em;
+    font-size:0.9em;             /* réduit 10 % */
   }
 
-  /* compactage */
+  /* compactage mineur */
   .session-bar{ padding:.25em .6em; font-size:.8em; }
   .session-body{ padding:.5em .9em .5em 1.3em; }
   .session-body li{ margin-bottom:.3em; }
 
-  /* cache le gros titre + bouton */
-  h1, #downloadPdf, form{ display:none; }
-
-  /* évite de couper une session au milieu */
+  /* empêche une barre bleue d'être scindée */
   .session{ break-inside:avoid; }
+
+  /* on cache le gros titre, le bouton et le formulaire */
+  h1, #downloadPdf, form{ display:none; }
 }
