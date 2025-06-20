@@ -82,7 +82,7 @@ button:hover{ background:#003f7f; }
 
 .plan-logo{
   position:absolute;
-  top:-8px;                /* remonte un peu le logo */
+  top:-20px;                /* remonte un peu le logo */
   right:0;
   width:80px;              /* adapte si besoin */
   height:auto;
