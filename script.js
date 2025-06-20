@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B" };
   const roomsAct3 = { 1: "Salle D", 2: "Salle A/C" };
 
-  /* ─── 1) Charger JSON (corrige NaN) ─────────────────────────── */
+  /* ─── 1) Charger JSON (corriger NaN) ─────────────────────────── */
   fetch("./assignments.json")
     .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
     .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
