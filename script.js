@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        /* ─── 3) Si utilisateur = Ines Majjad (clé générique) ──── */
-        if (user.act1 === "ALL" || user.act2 === "ALL" || user.act3 === "ALL") {
+        /* ─── 3) Planning global si trois champs = "N/A" ───────── */
+        if (user.act1 === "N/A" && user.act2 === "N/A" && user.act3 === "N/A") {
           generateFullPlanning(assignments);
           return;
         }
@@ -62,30 +62,28 @@ document.addEventListener("DOMContentLoaded", () => {
         title1.textContent = "Séminaire Finance 2025";
         title2.textContent = formatName(firstIn.value, lastIn.value);
 
-        /* ─── 5) Injecter groupes + salles ─────────────────────── */
+        /* ─── 5) Injecter groupes + salles (affiche N/A proprement) */
         g1.textContent     = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
-        g1room.textContent = user.act1 === "N/A" ? "N/A" : (roomsAct1[user.act1] || "");
+        g1room.textContent = user.act1 === "N/A" ? "N/A" : (roomsAct1[user.act1] || "N/A");
 
         g2.textContent  = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
-        g2b.textContent = g2.textContent;
+        g2b.textContent = g2.textContent; // miroir si tu as deux emplacements
 
         g3.textContent     = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
-        g3room.textContent = user.act3 === "N/A" ? "N/A" : (roomsAct3[user.act3] || "");
+        g3room.textContent = user.act3 === "N/A" ? "N/A" : (roomsAct3[user.act3] || "N/A");
 
         planning.style.display = "block";
 
         /* ─── 6) Téléchargement PDF personnalisé ───────────────── */
-        download.onclick = () => {
-          html2pdf().set({
+        download.onclick = async () => {
+          await html2pdf().set({
             margin: 5,
             filename: `planning_${firstNorm}_${lastNorm}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak: { mode: ['css', 'legacy'] }
-          })
-          .from(planning)
-          .save();
+          }).from(planning).save();
         };
       });
 
@@ -102,7 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </tr></thead><tbody></tbody>`;
 
         Object.entries(assignments).forEach(([fullName, data]) => {
-          if (data.act1 === "ALL") return;
+          /* on ignore la ligne d’Ines (les trois champs = "N/A") */
+          if (data.act1 === "N/A" && data.act2 === "N/A" && data.act3 === "N/A") return;
 
           const act1Display = data.act1 === "N/A" ? "N/A" : `Groupe ${data.act1}`;
           const act1Room    = data.act1 === "N/A" ? "N/A" : (roomsAct1[data.act1] || "N/A");
@@ -121,21 +120,25 @@ document.addEventListener("DOMContentLoaded", () => {
           table.querySelector("tbody").appendChild(row);
         });
 
+        /* wrapper responsive pour mobile */
+        const wrapper = document.createElement("div");
+        wrapper.style.overflowX = "auto";
+        wrapper.appendChild(table);
+
         planning.innerHTML = "";
-        planning.appendChild(table);
+        planning.appendChild(wrapper);
         planning.style.display = "block";
 
-        download.onclick = () => {
-          html2pdf().set({
+        /* --- PDF global --- */
+        download.onclick = async () => {
+          await html2pdf().set({
             margin: 5,
             filename: `planning_global_ines_majjad.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak: { mode: ['css', 'legacy'] }
-          })
-          .from(planning)
-          .save();
+          }).from(planning).save();
         };
       }
     })
