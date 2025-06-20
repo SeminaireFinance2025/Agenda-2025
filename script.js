@@ -49,41 +49,95 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        /* ─── 3) Titre personnalisé ────────────────────────────── */
+        /* ─── 3) Si utilisateur = Ines Majjad (clé générique) ──── */
+        if (user.act1 === "ALL" || user.act2 === "ALL" || user.act3 === "ALL") {
+          generateFullPlanning(assignments);
+          return;
+        }
+
+        /* ─── 4) Titre personnalisé ────────────────────────────── */
         const formatName = (p, n) =>
           p.charAt(0).toUpperCase() + p.slice(1).toLowerCase() + " " + n.toUpperCase();
 
         title1.textContent = "Séminaire Finance 2025";
         title2.textContent = formatName(firstIn.value, lastIn.value);
 
-        /* ─── 4) Injecter groupes + salles ─────────────────────── */
-        g1.textContent  = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
-        g1room.textContent = roomsAct1[user.act1] || "";
+        /* ─── 5) Injecter groupes + salles ─────────────────────── */
+        g1.textContent     = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
+        g1room.textContent = user.act1 === "N/A" ? "N/A" : (roomsAct1[user.act1] || "");
 
         g2.textContent  = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
         g2b.textContent = g2.textContent;
 
-        g3.textContent  = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
-        g3room.textContent = roomsAct3[user.act3] || "";
+        g3.textContent     = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
+        g3room.textContent = user.act3 === "N/A" ? "N/A" : (roomsAct3[user.act3] || "");
 
         planning.style.display = "block";
 
-        /* ─── 5) Téléchargement PDF (A4 portrait, fiable) ───────── */
+        /* ─── 6) Téléchargement PDF personnalisé ───────────────── */
         download.onclick = () => {
           html2pdf().set({
-            margin: 5,                                 // 5 mm de bord
+            margin: 5,
             filename: `planning_${firstNorm}_${lastNorm}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-
-            /* laisses les coupures CSS — ne force plus avoid-all */
             pagebreak: { mode: ['css', 'legacy'] }
           })
           .from(planning)
           .save();
         };
       });
+
+      /* ─── 7) Fonction : Générer planning global ─────────────── */
+      function generateFullPlanning(assignments) {
+        title1.textContent = "Planning général - Séminaire Finance 2025";
+        title2.textContent = "Ines MAJJAD";
+
+        const table = document.createElement("table");
+        table.innerHTML = `
+          <thead><tr>
+            <th>Nom</th><th>Act1</th><th>Salle1</th>
+            <th>Act2</th><th>Act3</th><th>Salle3</th>
+          </tr></thead><tbody></tbody>`;
+
+        Object.entries(assignments).forEach(([fullName, data]) => {
+          if (data.act1 === "ALL") return;
+
+          const act1Display = data.act1 === "N/A" ? "N/A" : `Groupe ${data.act1}`;
+          const act1Room    = data.act1 === "N/A" ? "N/A" : (roomsAct1[data.act1] || "N/A");
+
+          const act2Display = data.act2 === "N/A" ? "N/A" : `Groupe ${data.act2}`;
+          const act3Display = data.act3 === "N/A" ? "N/A" : `Groupe ${data.act3}`;
+          const act3Room    = data.act3 === "N/A" ? "N/A" : (roomsAct3[data.act3] || "N/A");
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${fullName}</td>
+            <td>${act1Display}</td><td>${act1Room}</td>
+            <td>${act2Display}</td>
+            <td>${act3Display}</td><td>${act3Room}</td>
+          `;
+          table.querySelector("tbody").appendChild(row);
+        });
+
+        planning.innerHTML = "";
+        planning.appendChild(table);
+        planning.style.display = "block";
+
+        download.onclick = () => {
+          html2pdf().set({
+            margin: 5,
+            filename: `planning_global_ines_majjad.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak: { mode: ['css', 'legacy'] }
+          })
+          .from(planning)
+          .save();
+        };
+      }
     })
     .catch(err => {
       console.error(err);
