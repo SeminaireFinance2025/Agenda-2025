@@ -190,3 +190,34 @@ button:hover{ background:#003f7f; }
   .session{ break-inside:avoid; }
   h1, #downloadPdf, form{ display:none; }
 }
+/* ——— Ajustement logo & titres en dessous de 500 px ——— */
+@media (max-width:500px){
+  /* réserve l’espace du logo à droite : */
+  .plan-header{ padding-right:70px; }     /* 70 px = largeur logo + marge */
+
+  /* logo plus petit et légèrement plus bas */
+  .plan-logo{
+    width:60px;        /* ↓ 80 → 60 px  */
+    top:-12px;         /* chevauche un peu moins */
+  }
+
+  /* légère réduction des titres pour garder deux lignes nettes */
+  .plan-titles h2{ font-size:1.15rem; }
+  .plan-titles h3{ font-size:.95rem; }
+}
+
+/* ——— Extra-petits téléphones (< 350 px) : on empile ——— */
+@media (max-width:350px){
+  .plan-header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-right:0;          /* plus besoin d’espace réservé */
+  }
+  .plan-logo{
+    position:static;          /* passe dans le flux            */
+    width:55px;
+    margin-bottom:.5rem;
+  }
+}
+
