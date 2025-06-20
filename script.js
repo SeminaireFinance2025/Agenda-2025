@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const roomsAct3 = { 1: "Salle D", 2: "Salle A/C" };
   const isNA      = x => x == null || x === "N/A";
 
-  /* ── Charger JSON et préparer l’app ─────────────────────────── */
+  /* ── Charger JSON ───────────────────────────────────────────── */
   fetch("./assignments.json")
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
     .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
@@ -33,57 +33,51 @@ document.addEventListener("DOMContentLoaded", () => {
         ev.preventDefault();
         feedback.textContent = "";
 
-        const norm = s => s.normalize("NFD")
-                           .replace(/[\u0300-\u036f]/g, "")
-                           .trim().toLowerCase();
-
+        const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
         const firstNorm = norm(firstIn.value);
         const lastNorm  = norm(lastIn.value);
-        if (!firstNorm || !lastNorm) {
+
+        if (!firstNorm || !lastNorm){
           feedback.textContent = "Merci de remplir prénom et nom.";
           return;
         }
 
         const user = assignments[`${firstNorm} ${lastNorm}`];
-        if (!user) {
+        if (!user){
           feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
           return;
         }
 
-        /* — Planning global : trois champs vides/N-A — */
-        if (isNA(user.act1) && isNA(user.act2) && isNA(user.act3)) {
+        /* Vue globale ou individuelle */
+        if (isNA(user.act1) && isNA(user.act2) && isNA(user.act3)){
           renderGlobal(assignments);
+          attachDownload("planning_global_ines_majjad.pdf");
         } else {
           renderPersonal(user, firstIn.value, lastIn.value);
+          attachDownload(`planning_${firstNorm}_${lastNorm}.pdf`);
         }
       });
 
-      /* ───────────────────────────────────────────────────────── */
-      /*  R E N D U S                                             */
-      /* ───────────────────────────────────────────────────────── */
+      /* ── Rendus ─────────────────────────────────────────────── */
 
-      function renderPersonal(user, first, last) {
+      function renderPersonal(u, first, last){
         title1.textContent = "Séminaire Finance 2025";
-        title2.textContent = `${first.charAt(0).toUpperCase() + first.slice(1).toLowerCase()} ${last.toUpperCase()}`;
+        title2.textContent = `${first.charAt(0).toUpperCase()+first.slice(1).toLowerCase()} ${last.toUpperCase()}`;
 
-        g1.textContent     = isNA(user.act1) ? "N/A" : `Groupe ${user.act1}`;
-        g1room.textContent = isNA(user.act1) ? "N/A" : (roomsAct1[user.act1] || "N/A");
-
-        g2.textContent  = isNA(user.act2) ? "N/A" : `Groupe ${user.act2}`;
-        g2b.textContent = g2.textContent;
-
-        g3.textContent     = isNA(user.act3) ? "N/A" : `Groupe ${user.act3}`;
-        g3room.textContent = isNA(user.act3) ? "N/A" : (roomsAct3[user.act3] || "N/A");
+        g1.textContent     = isNA(u.act1) ? "N/A" : `Groupe ${u.act1}`;
+        g1room.textContent = isNA(u.act1) ? "N/A" : (roomsAct1[u.act1] || "N/A");
+        g2.textContent     = isNA(u.act2) ? "N/A" : `Groupe ${u.act2}`;
+        g2b.textContent    = g2.textContent;
+        g3.textContent     = isNA(u.act3) ? "N/A" : `Groupe ${u.act3}`;
+        g3room.textContent = isNA(u.act3) ? "N/A" : (roomsAct3[u.act3] || "N/A");
 
         planning.style.display = "block";
-        attachDownload(`planning_${first}_${last}.pdf`);
       }
 
-      function renderGlobal(assignments) {
+      function renderGlobal(data){
         title1.textContent = "Planning général - Séminaire Finance 2025";
         title2.textContent = "Ines MAJJAD";
 
-        /* table responsive */
         const table = document.createElement("table");
         table.innerHTML = `
           <thead><tr>
@@ -91,8 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
             <th>Act2</th><th>Act3</th><th>Salle3</th>
           </tr></thead><tbody></tbody>`;
 
-        Object.entries(assignments).forEach(([name, d]) => {
-          if (isNA(d.act1) && isNA(d.act2) && isNA(d.act3)) return; // skip Ines
+        Object.entries(data).forEach(([name, d])=>{
+          if (isNA(d.act1) && isNA(d.act2) && isNA(d.act3)) return; // saute Ines
 
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -105,47 +99,48 @@ document.addEventListener("DOMContentLoaded", () => {
           table.tBodies[0].appendChild(row);
         });
 
-        planning.innerHTML = "";      // on remplace le contenu
+        planning.innerHTML = "";
         const wrap = document.createElement("div");
         wrap.style.overflowX = "auto";
         wrap.appendChild(table);
         planning.appendChild(wrap);
-
         planning.style.display = "block";
-        attachDownload("planning_global_ines_majjad.pdf");
       }
 
-      /* ───────────────────────────────────────────────────────── */
-      /*  D O W N L O A D                                         */
-      /* ───────────────────────────────────────────────────────── */
+      /* ── Téléchargement PDF ─────────────────────────────────── */
 
-      function attachDownload(filename) {
-        download.onclick = async () => {
-          planning.style.display = "block"; // au cas où
-          if (window.html2pdf) {
-            try {
-              await html2pdf()
-                .set({
-                  margin: 5,
-                  filename,
-                  html2canvas: { scale: 2, useCORS: true },
-                  jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                  pagebreak: { mode: ['css', 'legacy'] }
-                })
-                .from(planning)
-                .save();
-              return;                       // succès
-            } catch (e) {
-              console.error("html2pdf a échoué, fallback print()", e);
-            }
+      function attachDownload(filename){
+        /* reset pour éviter empilement */
+        download.replaceWith(download.cloneNode(true));
+        const btn = document.getElementById("downloadPdf");
+
+        btn.onclick = async () => {
+          if (!window.html2pdf){
+            alert("Le module PDF n'a pas été chargé. Veuillez réessayer plus tard.");
+            return;
           }
-          /* Fallback natif */
-          window.print();
+          try{
+            await html2pdf()
+              .set({
+                margin:5,
+                filename,
+                html2canvas:{ scale:2, useCORS:true },
+                jsPDF:{ unit:"mm", format:"a4", orientation:"portrait" },
+                pagebreak:{ mode:["css","legacy"] }
+              })
+              .from(planning)
+              .save();
+          }catch(e){
+            console.error("Erreur html2pdf :", e);
+            alert("Impossible de générer le PDF.");
+          }
         };
       }
+
     })
-    .catch(err => {
+    .catch(err=>{
       console.error(err);
       feedback.textContent = `Impossible de charger les affectations : ${err.message}`;
     });
+
 });
