@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B" };
   const roomsAct3 = { 1: "Salle D", 2: "Salle A/C" };
 
-  /* ─── 1) Charger JSON (corriger NaN) ─────────────────────────── */
+  /* ─── 1) Charger JSON (corrige NaN) ─────────────────────────── */
   fetch("./assignments.json")
     .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
     .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
@@ -49,8 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        /* ─── 3) Planning global si trois champs = "N/A" ───────── */
-        if (user.act1 === "N/A" && user.act2 === "N/A" && user.act3 === "N/A") {
+        /* ─── 3) Planning global si trois champs manquants ─────── */
+        const isNA = x => x == null || x === "N/A";
+        if (isNA(user.act1) && isNA(user.act2) && isNA(user.act3)) {
           generateFullPlanning(assignments);
           return;
         }
@@ -62,19 +63,19 @@ document.addEventListener("DOMContentLoaded", () => {
         title1.textContent = "Séminaire Finance 2025";
         title2.textContent = formatName(firstIn.value, lastIn.value);
 
-        /* ─── 5) Injecter groupes + salles (affiche N/A proprement) */
-        g1.textContent     = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
-        g1room.textContent = user.act1 === "N/A" ? "N/A" : (roomsAct1[user.act1] || "N/A");
+        /* ─── 5) Injecter groupes + salles (N/A propre) ────────── */
+        g1.textContent     = isNA(user.act1) ? "N/A" : `Groupe ${user.act1}`;
+        g1room.textContent = isNA(user.act1) ? "N/A" : (roomsAct1[user.act1] || "N/A");
 
-        g2.textContent  = user.act2 === "N/A" ? "N/A" : `Groupe ${user.act2}`;
-        g2b.textContent = g2.textContent; // miroir si tu as deux emplacements
+        g2.textContent     = isNA(user.act2) ? "N/A" : `Groupe ${user.act2}`;
+        g2b.textContent    = g2.textContent;
 
-        g3.textContent     = user.act3 === "N/A" ? "N/A" : `Groupe ${user.act3}`;
-        g3room.textContent = user.act3 === "N/A" ? "N/A" : (roomsAct3[user.act3] || "N/A");
+        g3.textContent     = isNA(user.act3) ? "N/A" : `Groupe ${user.act3}`;
+        g3room.textContent = isNA(user.act3) ? "N/A" : (roomsAct3[user.act3] || "N/A");
 
         planning.style.display = "block";
 
-        /* ─── 6) Téléchargement PDF personnalisé ───────────────── */
+        /* ─── 6) Téléchargement PDF individuel ─────────────────── */
         download.onclick = async () => {
           await html2pdf().set({
             margin: 5,
@@ -99,16 +100,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <th>Act2</th><th>Act3</th><th>Salle3</th>
           </tr></thead><tbody></tbody>`;
 
+        const isNA = x => x == null || x === "N/A";
+
         Object.entries(assignments).forEach(([fullName, data]) => {
-          /* on ignore la ligne d’Ines (les trois champs = "N/A") */
-          if (data.act1 === "N/A" && data.act2 === "N/A" && data.act3 === "N/A") return;
+          /* ignorer la ligne d’Ines (3 valeurs NA) */
+          if (isNA(data.act1) && isNA(data.act2) && isNA(data.act3)) return;
 
-          const act1Display = data.act1 === "N/A" ? "N/A" : `Groupe ${data.act1}`;
-          const act1Room    = data.act1 === "N/A" ? "N/A" : (roomsAct1[data.act1] || "N/A");
+          const act1Display = isNA(data.act1) ? "N/A" : `Groupe ${data.act1}`;
+          const act1Room    = isNA(data.act1) ? "N/A" : (roomsAct1[data.act1] || "N/A");
 
-          const act2Display = data.act2 === "N/A" ? "N/A" : `Groupe ${data.act2}`;
-          const act3Display = data.act3 === "N/A" ? "N/A" : `Groupe ${data.act3}`;
-          const act3Room    = data.act3 === "N/A" ? "N/A" : (roomsAct3[data.act3] || "N/A");
+          const act2Display = isNA(data.act2) ? "N/A" : `Groupe ${data.act2}`;
+          const act3Display = isNA(data.act3) ? "N/A" : `Groupe ${data.act3}`;
+          const act3Room    = isNA(data.act3) ? "N/A" : (roomsAct3[data.act3] || "N/A");
 
           const row = document.createElement("tr");
           row.innerHTML = `
@@ -120,7 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
           table.querySelector("tbody").appendChild(row);
         });
 
-        /* wrapper responsive pour mobile */
         const wrapper = document.createElement("div");
         wrapper.style.overflowX = "auto";
         wrapper.appendChild(table);
@@ -129,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
         planning.appendChild(wrapper);
         planning.style.display = "block";
 
-        /* --- PDF global --- */
         download.onclick = async () => {
           await html2pdf().set({
             margin: 5,
