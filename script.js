@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* ─── Références DOM ───────────────────────────────────────────── */
+  /* ─── Références DOM ─────────────────────────────────────────── */
   const form      = document.getElementById("nameForm");
   const firstIn   = document.getElementById("first_name");
   const lastIn    = document.getElementById("last_name");
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const planning  = document.getElementById("planning");
   const download  = document.getElementById("downloadPdf");
 
-  /* Titres et champs planning */
+  /* Titres + champs planning */
   const title1 = document.getElementById("titleLine1");
   const title2 = document.getElementById("titleLine2");
   const g1      = document.getElementById("g1");
@@ -18,16 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const g3room  = document.getElementById("g3room");
 
   /* Tables groupe → salle */
-  const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B"  };
-  const roomsAct3 = { 1: "Salle D", 2: "Salle A/C"               };
+  const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B" };
+  const roomsAct3 = { 1: "Salle D", 2: "Salle A/C" };
 
-  /* ─── 1) Charger JSON (corrige NaN) ────────────────────────────── */
+  /* ─── 1) Charger JSON (corrige NaN) ─────────────────────────── */
   fetch("./assignments.json")
     .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
     .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
     .then(assignments => {
 
-      /* ─── 2) Soumission formulaire ─────────────────────────────── */
+      /* ─── 2) Soumission formulaire ───────────────────────────── */
       form.addEventListener("submit", ev => {
         ev.preventDefault();
         feedback.textContent = "";
@@ -49,14 +49,14 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        /* ─── 3) Titre personnalisé ─────────────────────────────── */
+        /* ─── 3) Titre personnalisé ────────────────────────────── */
         const formatName = (p, n) =>
           p.charAt(0).toUpperCase() + p.slice(1).toLowerCase() + " " + n.toUpperCase();
 
         title1.textContent = "Séminaire Finance 2025";
         title2.textContent = formatName(firstIn.value, lastIn.value);
 
-        /* ─── 4) Injecter groupes + salles ───────────────────────── */
+        /* ─── 4) Injecter groupes + salles ─────────────────────── */
         g1.textContent  = user.act1 === "N/A" ? "N/A" : `Groupe ${user.act1}`;
         g1room.textContent = roomsAct1[user.act1] || "";
 
@@ -68,16 +68,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         planning.style.display = "block";
 
-        /* ─── 5) Téléchargement PDF : A4 portrait, coupure CSS ───── */
+        /* ─── 5) Téléchargement PDF (A4 portrait, fiable) ───────── */
         download.onclick = () => {
           html2pdf().set({
-            margin: 5,                                 // 5 mm
+            margin: 5,                                 // 5 mm de bord
             filename: `planning_${firstNorm}_${lastNorm}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
 
-            /* on suit les règles CSS → .session { break-inside:avoid } */
+            /* laisses les coupures CSS — ne force plus avoid-all */
             pagebreak: { mode: ['css', 'legacy'] }
           })
           .from(planning)
