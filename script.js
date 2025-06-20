@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /* ─── Références DOM ─────────────────────────────────────────── */
+
+  /* ── Références DOM ─────────────────────────────────────────── */
   const form      = document.getElementById("nameForm");
   const firstIn   = document.getElementById("first_name");
   const lastIn    = document.getElementById("last_name");
@@ -7,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const planning  = document.getElementById("planning");
   const download  = document.getElementById("downloadPdf");
 
-  /* Titres + champs planning */
   const title1 = document.getElementById("titleLine1");
   const title2 = document.getElementById("titleLine2");
   const g1      = document.getElementById("g1");
@@ -17,17 +17,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const g3      = document.getElementById("g3");
   const g3room  = document.getElementById("g3room");
 
-  /* Tables groupe → salle */
+  /* Groupes → salles */
   const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B" };
   const roomsAct3 = { 1: "Salle D", 2: "Salle A/C" };
+  const isNA      = x => x == null || x === "N/A";
 
-  /* ─── 1) Charger JSON (corrige NaN) ─────────────────────────── */
+  /* ── Charger JSON et préparer l’app ─────────────────────────── */
   fetch("./assignments.json")
-    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+    .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
     .then(t => JSON.parse(t.replace(/\bNaN\b/g, '"N/A"')))
     .then(assignments => {
 
-      /* ─── 2) Soumission formulaire ───────────────────────────── */
+      /* ── Soumission formulaire ──────────────────────────────── */
       form.addEventListener("submit", ev => {
         ev.preventDefault();
         feedback.textContent = "";
@@ -38,61 +39,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const firstNorm = norm(firstIn.value);
         const lastNorm  = norm(lastIn.value);
-        if (!firstNorm || !lastNorm){
+        if (!firstNorm || !lastNorm) {
           feedback.textContent = "Merci de remplir prénom et nom.";
           return;
         }
 
         const user = assignments[`${firstNorm} ${lastNorm}`];
-        if (!user){
+        if (!user) {
           feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
           return;
         }
 
-        /* ─── 3) Planning global si trois champs manquants ─────── */
-        const isNA = x => x == null || x === "N/A";
+        /* — Planning global : trois champs vides/N-A — */
         if (isNA(user.act1) && isNA(user.act2) && isNA(user.act3)) {
-          generateFullPlanning(assignments);
-          return;
+          renderGlobal(assignments);
+        } else {
+          renderPersonal(user, firstIn.value, lastIn.value);
         }
+      });
 
-        /* ─── 4) Titre personnalisé ────────────────────────────── */
-        const formatName = (p, n) =>
-          p.charAt(0).toUpperCase() + p.slice(1).toLowerCase() + " " + n.toUpperCase();
+      /* ───────────────────────────────────────────────────────── */
+      /*  R E N D U S                                             */
+      /* ───────────────────────────────────────────────────────── */
 
+      function renderPersonal(user, first, last) {
         title1.textContent = "Séminaire Finance 2025";
-        title2.textContent = formatName(firstIn.value, lastIn.value);
+        title2.textContent = `${first.charAt(0).toUpperCase() + first.slice(1).toLowerCase()} ${last.toUpperCase()}`;
 
-        /* ─── 5) Injecter groupes + salles (N/A propre) ────────── */
         g1.textContent     = isNA(user.act1) ? "N/A" : `Groupe ${user.act1}`;
         g1room.textContent = isNA(user.act1) ? "N/A" : (roomsAct1[user.act1] || "N/A");
 
-        g2.textContent     = isNA(user.act2) ? "N/A" : `Groupe ${user.act2}`;
-        g2b.textContent    = g2.textContent;
+        g2.textContent  = isNA(user.act2) ? "N/A" : `Groupe ${user.act2}`;
+        g2b.textContent = g2.textContent;
 
         g3.textContent     = isNA(user.act3) ? "N/A" : `Groupe ${user.act3}`;
         g3room.textContent = isNA(user.act3) ? "N/A" : (roomsAct3[user.act3] || "N/A");
 
         planning.style.display = "block";
+        attachDownload(`planning_${first}_${last}.pdf`);
+      }
 
-        /* ─── 6) Téléchargement PDF individuel ─────────────────── */
-        download.onclick = async () => {
-          await html2pdf().set({
-            margin: 5,
-            filename: `planning_${firstNorm}_${lastNorm}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['css', 'legacy'] }
-          }).from(planning).save();
-        };
-      });
-
-      /* ─── 7) Fonction : Générer planning global ─────────────── */
-      function generateFullPlanning(assignments) {
+      function renderGlobal(assignments) {
         title1.textContent = "Planning général - Séminaire Finance 2025";
         title2.textContent = "Ines MAJJAD";
 
+        /* table responsive */
         const table = document.createElement("table");
         table.innerHTML = `
           <thead><tr>
@@ -100,52 +91,61 @@ document.addEventListener("DOMContentLoaded", () => {
             <th>Act2</th><th>Act3</th><th>Salle3</th>
           </tr></thead><tbody></tbody>`;
 
-        const isNA = x => x == null || x === "N/A";
-
-        Object.entries(assignments).forEach(([fullName, data]) => {
-          /* ignorer la ligne d’Ines (3 valeurs NA) */
-          if (isNA(data.act1) && isNA(data.act2) && isNA(data.act3)) return;
-
-          const act1Display = isNA(data.act1) ? "N/A" : `Groupe ${data.act1}`;
-          const act1Room    = isNA(data.act1) ? "N/A" : (roomsAct1[data.act1] || "N/A");
-
-          const act2Display = isNA(data.act2) ? "N/A" : `Groupe ${data.act2}`;
-          const act3Display = isNA(data.act3) ? "N/A" : `Groupe ${data.act3}`;
-          const act3Room    = isNA(data.act3) ? "N/A" : (roomsAct3[data.act3] || "N/A");
+        Object.entries(assignments).forEach(([name, d]) => {
+          if (isNA(d.act1) && isNA(d.act2) && isNA(d.act3)) return; // skip Ines
 
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${fullName}</td>
-            <td>${act1Display}</td><td>${act1Room}</td>
-            <td>${act2Display}</td>
-            <td>${act3Display}</td><td>${act3Room}</td>
-          `;
-          table.querySelector("tbody").appendChild(row);
+            <td>${name}</td>
+            <td>${isNA(d.act1) ? "N/A" : `Groupe ${d.act1}`}</td>
+            <td>${isNA(d.act1) ? "N/A" : (roomsAct1[d.act1] || "N/A")}</td>
+            <td>${isNA(d.act2) ? "N/A" : `Groupe ${d.act2}`}</td>
+            <td>${isNA(d.act3) ? "N/A" : `Groupe ${d.act3}`}</td>
+            <td>${isNA(d.act3) ? "N/A" : (roomsAct3[d.act3] || "N/A")}</td>`;
+          table.tBodies[0].appendChild(row);
         });
 
-        const wrapper = document.createElement("div");
-        wrapper.style.overflowX = "auto";
-        wrapper.appendChild(table);
+        planning.innerHTML = "";      // on remplace le contenu
+        const wrap = document.createElement("div");
+        wrap.style.overflowX = "auto";
+        wrap.appendChild(table);
+        planning.appendChild(wrap);
 
-        planning.innerHTML = "";
-        planning.appendChild(wrapper);
         planning.style.display = "block";
+        attachDownload("planning_global_ines_majjad.pdf");
+      }
 
+      /* ───────────────────────────────────────────────────────── */
+      /*  D O W N L O A D                                         */
+      /* ───────────────────────────────────────────────────────── */
+
+      function attachDownload(filename) {
         download.onclick = async () => {
-          await html2pdf().set({
-            margin: 5,
-            filename: `planning_global_ines_majjad.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['css', 'legacy'] }
-          }).from(planning).save();
+          planning.style.display = "block"; // au cas où
+          if (window.html2pdf) {
+            try {
+              await html2pdf()
+                .set({
+                  margin: 5,
+                  filename,
+                  html2canvas: { scale: 2, useCORS: true },
+                  jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                  pagebreak: { mode: ['css', 'legacy'] }
+                })
+                .from(planning)
+                .save();
+              return;                       // succès
+            } catch (e) {
+              console.error("html2pdf a échoué, fallback print()", e);
+            }
+          }
+          /* Fallback natif */
+          window.print();
         };
       }
     })
     .catch(err => {
       console.error(err);
-      feedback.textContent =
-        "Impossible de charger les affectations : " + err.message;
+      feedback.textContent = `Impossible de charger les affectations : ${err.message}`;
     });
 });
