@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const user = assignments[`${firstNorm} ${lastNorm}`];
         if (!user){
-          feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe.";
+          feedback.textContent = "Nom non trouvé. Vérifiez l’orthographe, évitez les accents.";
           return;
         }
 
