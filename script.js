@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const g3room  = document.getElementById("g3room");
 
   /* Tables groupe → salle */
-  const roomsAct1 = { 1: "Maison",     2: "Salle A/C", 3: "Salle B"  };
-  const roomsAct3 = { 1: "Salle D",    2: "Salle A/C"               };
+  const roomsAct1 = { 1: "Maison", 2: "Salle A/C", 3: "Salle B"  };
+  const roomsAct3 = { 1: "Salle D", 2: "Salle A/C"               };
 
   /* ─── 1) Charger JSON (corrige NaN) ────────────────────────────── */
   fetch("./assignments.json")
@@ -32,9 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
         ev.preventDefault();
         feedback.textContent = "";
 
-        /* Normalisation : sans accents, lower-case */
-        const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                                            .trim().toLowerCase();
+        const norm = s => s.normalize("NFD")
+                           .replace(/[\u0300-\u036f]/g, "")
+                           .trim().toLowerCase();
+
         const firstNorm = norm(firstIn.value);
         const lastNorm  = norm(lastIn.value);
         if (!firstNorm || !lastNorm){
@@ -67,15 +68,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         planning.style.display = "block";
 
-        /* ─── 5) Téléchargement PDF (A4 portrait) ────────────────── */
+        /* ─── 5) Téléchargement PDF : A4 portrait, coupure CSS ───── */
         download.onclick = () => {
           html2pdf().set({
             margin: 5,                                 // 5 mm
             filename: `planning_${firstNorm}_${lastNorm}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },  // rendu net
+            html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all'] }         // tout sur 1 page
+
+            /* on suit les règles CSS → .session { break-inside:avoid } */
+            pagebreak: { mode: ['css', 'legacy'] }
           })
           .from(planning)
           .save();
