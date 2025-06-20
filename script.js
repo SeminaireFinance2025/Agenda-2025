@@ -70,12 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
         /* ─── 5) Téléchargement PDF (A4 portrait) ────────────────── */
         download.onclick = () => {
           html2pdf().set({
-            margin: 5,                                     // 5 mm
+            margin: 5,                                 // 5 mm
             filename: `planning_${firstNorm}_${lastNorm}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },       // net
+            html2canvas: { scale: 2, useCORS: true },  // rendu net
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { mode: ['avoid-all'] }              // une page
+            pagebreak: { mode: ['avoid-all'] }         // tout sur 1 page
           })
           .from(planning)
           .save();
