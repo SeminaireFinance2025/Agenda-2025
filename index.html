@@ -2,19 +2,34 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Votre agenda personnalisé:</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- mobile friendly -->
 
-  <!-- CSS -->
+  <title>Votre agenda personnalisé</title>
+
+  <!-- ===== CSS ===== -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- html2pdf -->
-  <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <!-- ===== html2pdf.js (doit être chargé AVANT script.js) ===== -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-K/z1zjXGQdl14A6UFklJCvT5hv74r3aHDVX7d3pXIcKpGNQymzQQHj0ug1TG4MszUZWBKkRHVpzu0IF3RW/1eg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <!-- Script principal -->
+  <!-- ===== Script principal (defer) ===== -->
   <script src="script.js" defer></script>
+
+  <!-- ===== Petites règles print pour un PDF propre même sans html2pdf ===== -->
+  <style>
+    @media print {
+      /* on masque formulaire et bouton */
+      #nameForm, #downloadPdf { display: none !important; }
+      body { margin: 0; }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Votre agenda personnalisé:</h1>
+  <h1>Votre agenda personnalisé :</h1>
 
   <!-- ========= FORMULAIRE ========= -->
   <form id="nameForm">
@@ -28,16 +43,17 @@
   <!-- ========= PLANNING ========= -->
   <div id="planning" class="planning" style="display:none">
     <!-- ───── En-tête du planning avec logo ───── -->
-  <div class="plan-header">
-    <div class="plan-titles">
-      <h2 id="titleLine1">Séminaire Finance 2025</h2>
-      <h3 id="titleLine2">Nom Prénom</h3>
-    </div>
-  
-    <!-- logo.png doit être dans le même dossier que index.html -->
-    <img src="logo.png" alt="Logo Séminaire" class="plan-logo" />
-  </div>
+    <div class="plan-header">
+      <div class="plan-titles">
+        <h2 id="titleLine1">Séminaire Finance 2025</h2>
+        <h3 id="titleLine2">Nom Prénom</h3>
+      </div>
 
+      <!-- logo.png doit être dans le même dossier que index.html -->
+      <img src="logo.png" alt="Logo Séminaire" class="plan-logo" />
+    </div>
+
+    <!-- ========= DÉROULÉ DE LA JOURNÉE ========= -->
 
     <!-- 1) Introduction -->
     <div class="session">
@@ -48,7 +64,7 @@
       </div>
       <ul class="session-body">
         <li>Café d’accueil</li>
-        <li>Introduction de la journée&nbsp;: Salle A/C</li>
+        <li>Introduction de la journée : Salle A/C</li>
         <li>Présentation de l’agenda</li>
       </ul>
     </div>
@@ -62,8 +78,9 @@
       </div>
       <ul class="session-body">
         <li>
-          &nbsp; <strong id="g1" class="group-number"></strong>
-          - <strong id="g1room" class="room-name"></strong>
+          <strong id="g1" class="group-number"></strong>
+          &nbsp;–&nbsp;
+          <strong id="g1room" class="room-name"></strong>
         </li>
       </ul>
     </div>
@@ -76,7 +93,7 @@
         <span class="session-time">11h00</span>
       </div>
       <ul class="session-body">
-        <li>Témoignage de Fabrice LACROIX&nbsp;: DAF des JO 2024</li>
+        <li>Témoignage de Fabrice LACROIX : DAF des JO 2024</li>
       </ul>
     </div>
 
@@ -97,8 +114,8 @@
         <span class="session-time">13h15</span>
       </div>
       <ul class="session-body">
-        <li>Première partie&nbsp;: <strong id="g2"  class="group-number"></strong></li>
-        <li>Deuxième partie&nbsp;: <strong id="g2b" class="group-number"></strong></li>
+        <li>Première partie : <strong id="g2"  class="group-number"></strong></li>
+        <li>Deuxième partie : <strong id="g2b" class="group-number"></strong></li>
       </ul>
     </div>
 
@@ -123,8 +140,9 @@
       </div>
       <ul class="session-body">
         <li>
-          &nbsp; <strong id="g3" class="group-number"></strong>
-          - <strong id="g3room" class="room-name"></strong>
+          <strong id="g3" class="group-number"></strong>
+          &nbsp;–&nbsp;
+          <strong id="g3room" class="room-name"></strong>
         </li>
       </ul>
     </div>
@@ -137,7 +155,7 @@
         <span class="session-time">17h00</span>
       </div>
       <ul class="session-body">
-        <li>Votez pour votre innovation préférée&nbsp;: 
+        <li>Votez pour votre innovation préférée : 
             <a href="https://forms.office.com/e/GzAyJ9Ur32">ici</a>
         </li>
       </ul>
@@ -153,6 +171,7 @@
       <p class="session-footer">Fin de la journée à 17h30</p>
     </div>
 
+    <!-- ===== Bouton de téléchargement PDF ===== -->
     <button id="downloadPdf" class="download-btn">Télécharger le PDF</button>
   </div>
 </body>
