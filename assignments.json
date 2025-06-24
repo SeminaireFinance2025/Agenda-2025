@@ -497,7 +497,7 @@
   "loyse faroux": {
     "act1": 1.0,
     "act2": 1.0,
-    "act3": 1.0
+    "act3": 2.0
   },
   "marjorie clement": {
     "act1": 3.0,
@@ -515,8 +515,8 @@
     "act3": 1.0
   },
   "laetitia david": {
-    "act1": null,
-    "act2": null,
+    "act1": 2.0,
+    "act2": 1.0,
     "act3": 1.0
   },
   "baptiste delpierre": {
